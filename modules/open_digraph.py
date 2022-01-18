@@ -17,6 +17,9 @@ class node:
 	def __repr__(self):
 		return repr(self.id) 
 
+	def copy(self):
+		return node(self.id,self.label,self.parents.copy(),self.children.copy())
+
 class open_digraph: # for open directed graph
 	def __init__(self, inputs, outputs, nodes):
 		'''
@@ -34,3 +37,10 @@ class open_digraph: # for open directed graph
 
 	def __repr__(self):
 		return "input:"+",".join([repr(i) for i in self.inputs])+"\noutput:"+",".join([repr(i) for i in self.outputs])
+
+	@classmethod
+	def empty(self):
+		return open_digraph([],[],[])
+
+	def copy(self):
+		return open_digraph(self.inputs.copy(),self.outputs.copy(),[node for node in self.nodes.values()])
