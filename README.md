@@ -1,2 +1,2 @@
-# projetInfott
+# projetInfo
 yes
