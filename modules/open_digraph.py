@@ -11,6 +11,35 @@ class node:
 		self.parents = parents
 		self.children = children
 
+	def get_id(self):
+		return self.id
+
+	def get_label(self):
+		return self.label 
+
+	def get_parents_ids(self):
+		return self.parents 
+
+	def get_children_ids(self):
+		return self.children 
+
+	def set_id(self , x):
+		self.id = x 
+
+	def set_label(self , x):
+		self.label = x 
+
+	def set_parents_ids(self , x):
+		self.parents = x 
+
+	def set_children_ids(self , x):
+		self.children = x 
+
+
+   
+
+
+
 	def __str__(self):
 		return str(self.id)
 
@@ -30,6 +59,43 @@ class open_digraph: # for open directed graph
 		self.inputs = inputs
 		self.outputs = outputs
 		self.nodes = {node.id:node for node in nodes} # self.nodes: <int,node> dict
+
+	def get_inputs_ids(self):
+		return self.inputs 
+
+	def get_outputs_ids(self):
+		return self.output 
+
+	def get_id_node_map(self):
+		return self.nodes 
+
+	def get_nodes(self):
+		return [node for node in self.nodes.values()] 
+
+	def get_node_ids(self):
+		return self.node.id 
+
+	def get_node_by_id(self):
+		return self.node.id()
+
+	def get_nodes_by_ids(self):
+		return [node for node in self.nodes.values().id()] 
+
+	def set_input_ids(self,x):
+		self.inputs = x 
+
+	def set_outputs_ids(self,x):
+		self.outputs = x 
+
+	def add_input_id(self,x,newinput):
+		self.inputs = x 
+		self.inputs.append(newinput)
+
+	def add_output_id(self,x,newoutput):
+		self.outputs = x
+		self.outputs.append(newoutput)
+
+
 
 	def __str__(self):
 		return "input:"+",".join([str(i) for i in self.inputs])+"\noutput:"+",".join([str(i) for i in self.outputs])
