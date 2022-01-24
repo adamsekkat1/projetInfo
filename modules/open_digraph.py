@@ -73,10 +73,10 @@ class open_digraph: # for open directed graph
 		return [node for node in self.nodes.values()] 
 
 	def get_node_ids(self):
-		return self.node.id 
+		return list(self.nodes.keys())
 
-	def get_node_by_id(self):
-		return self.node.id()
+	def get_node_by_id(self,id):
+		return self.nodes.get(id)
 
 	def get_nodes_by_ids(self):
 		return [node for node in self.nodes.values().id()] 
@@ -95,6 +95,9 @@ class open_digraph: # for open directed graph
 		self.outputs = x
 		self.outputs.append(newoutput)
 
+	
+
+
 
 
 	def __str__(self):
@@ -110,3 +113,16 @@ class open_digraph: # for open directed graph
 
 	def copy(self):
 		return open_digraph(self.inputs.copy(),self.outputs.copy(),[node for node in self.nodes.values()])
+
+	def new_id(self,Nid) :
+		a = self.get_node_ids()
+		#j = False
+		#for i in range(len(a)):
+			#if (a[i] == Nid ) :
+				#j =  True 
+		#if (j != True ):
+			#a.append(Nid) 
+		if not (Nid in a):
+			a.append(Nid)
+
+		return a 
