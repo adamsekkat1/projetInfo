@@ -18,10 +18,10 @@ class node:
 		return self.label 
 
 	def get_parents_ids(self):
-		return self.parents 
+		return self.parents.keys()
 
 	def get_children_ids(self):
-		return self.children 
+		return self.children.keys() 
 
 	def set_id(self , x):
 		self.id = x 
@@ -29,15 +29,20 @@ class node:
 	def set_label(self , x):
 		self.label = x 
 
-	def set_parents_ids(self , x):
-		self.parents = x 
+	def set_parents_ids(self , ids):
+		for n in ids:
+			self.parents[n] = 1
 
-	def set_children_ids(self , x):
-		self.children = x 
+	def set_children_ids(self , ids):
+		for n in ids:
+			self.children[n] = 1
 
-    def add_child_id(self, x):
-        self.children.append(x)
-        
+    def add_child_id(self, id_):
+    	if self.children[id_] != 0:
+        	self.children[id_] += 1
+        else:
+        	self.children[id_] = 0
+
     def add_parent_id(self, x):
         self.parents.append(x)
 
@@ -63,14 +68,23 @@ class node:
     def remove_child_id(self,idch):
     	self.children.pop(idch)
 
+    def add_parent_id(self, id_):
+        if self.parents[id_] != 0:
+        	self.parents[id_] += 1
+        else:
+        	self.parents[id_] = 0
+        	
+
 	def __str__(self):
 		return str(self.id)
 
 	def __repr__(self):
-		return repr(self.id) 
+		return repr(self.id)
 
 	def copy(self):
 		return node(self.id,self.label,self.parents.copy(),self.children.copy())
+
+
 
 class open_digraph: # for open directed graph
 	def __init__(self, inputs, outputs, nodes):
@@ -118,10 +132,6 @@ class open_digraph: # for open directed graph
 		#self.outputs = x
 		self.outputs.append(newoutput)
 
-	
-
-
-
 
 	def __str__(self):
 		return "input:"+",".join([str(i) for i in self.inputs])+"\noutput:"+",".join([str(i) for i in self.outputs])
@@ -135,9 +145,9 @@ class open_digraph: # for open directed graph
 		return open_digraph([],[],[])
 
 	def copy(self):
-		return open_digraph(self.inputs.copy(),self.outputs.copy(),[node for node in self.nodes.values()])
+		return open_digraph(self.inputs.copy(),self.outputs.copy(),self.nodes.copy())
 
-	def new_id(self) :
+	def new_id(self):
 		a = self.get_node_ids()
 		z = 0
 		while True:
@@ -151,17 +161,17 @@ class open_digraph: # for open directed graph
         self.nodes[tgt].add_parent_id(src)
         
     def add_node(self,label='',parents=[],children=[]):
-        id = self.new_id()
+        id_ = self.new_id()
         n = node(id,label,parents,children)
         if children == []:
-            self.add_output_id(id)
+            self.add_output_id(id_)
         if parents == []:
-            self.add_input_id(id)
+            self.add_input_id(id_)
         for p in parents:
-            self.nodes[p].add_child_id(id)
+            self.nodes[p].add_child_id(id_)
         for c in children:
             self.nodes[c].add_parent_id(id)
-        self.nodes[id] = n 
+            self.nodes[id] = n 
 
     def inputs_graph(self):
     	for Ninput in self.inputs:
@@ -213,7 +223,32 @@ class open_digraph: # for open directed graph
     def is_well_formed(self):
     	if(inputs_graph() and outputs_graph() and input_1_children() and output_1_parent() and cle_pointe_noeud() and multiplicite_vice_versa()):
     		return True 
+        
+    def remove_edge(self,src,tgt):
+    	self.get_node_by_id(src).remove_parent_once(tgt)
+    	self.get_node_by_id(tgt).remove_child_once(src)
 
-   
+    def remove_parallel_edge(self, src, tgt):
+    	self.get_node_by_id(src).remove_parent_id(tgt)
+    	self.get_node_by_id(tgt).remove_child_id(src)
+
+    def remove_node_by_id(self,nid):
+    	node = self.get_node_by_id(nid)
+    	[self.remove_parallel_edges(nid,par) for par in node.get_parents_ids()]
+    	[self.remove_parallel_edges(child,nid) for child in node.get_children_ids()]
+
+    def remove_edges(self,pairs=[]):
+    	for pair in pairs:
+    		self.remove_edge(pair[0],pair[1])
+
+    def remove_parallel_edges(self,pairs=[]):
+    	for pair in pairs:
+    		self.remove_parallel_edges(pair[0],pair[1])
+
+    def remove_nodes_by_id(self,ids):
+    	for nid in ids:
+    		self.remove_nodes_by_id(nid)
+
+
 
 

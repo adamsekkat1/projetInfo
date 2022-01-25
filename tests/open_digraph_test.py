@@ -22,7 +22,8 @@ class InitTest(unittest.TestCase):
 class CopyTest(unittest.TestCase):
     def test_copy(self):
         x=open_digraph.empty()
-        self.assertIsNot(x.copy(),x) 
+        self.assertIsNot(x.copy(),x)
+        
 if __name__ == '__main__': # the following code is called only when
     unittest.main() # precisely this file is run
 
