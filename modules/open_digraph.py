@@ -214,6 +214,6 @@ class open_digraph: # for open directed graph
     	if(inputs_graph() and outputs_graph() and input_1_children() and output_1_parent() and cle_pointe_noeud() and multiplicite_vice_versa()):
     		return True 
 
-    
+   
 
 
