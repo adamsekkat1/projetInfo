@@ -126,3 +126,5 @@ class open_digraph: # for open directed graph
 			a.append(Nid)
 
 		return a 
+	def add_edge(self , src , tgt):
+		
