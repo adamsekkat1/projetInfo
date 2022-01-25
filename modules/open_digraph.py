@@ -18,10 +18,10 @@ class node:
 		return self.label 
 
 	def get_parents_ids(self):
-		return self.parents 
+		return self.parents.keys()
 
 	def get_children_ids(self):
-		return self.children 
+		return self.children.keys() 
 
 	def set_id(self , x):
 		self.id = x 
@@ -29,21 +29,19 @@ class node:
 	def set_label(self , x):
 		self.label = x 
 
-	def set_parents_ids(self , x):
-		self.parents = x 
+	def set_parents_ids(self , nodes):
+		for n in nodes:
+			self.parents[n.get_id()] = n
 
-	def set_children_ids(self , x):
-		self.children = x 
+	def set_children_ids(self , nodes):
+		for n in nodes:
+			self.children[n.get_id()] = n
 
-    def add_child_id(self, x):
-        self.children.append(x)
+    def add_child_id(self, node):
+        self.children[node.get_id()] = node
         
-    def add_parent_id(self, x):
-        self.parents.append(x)
-
-   
-
-
+    def add_parent_id(self, node):
+        self.parents[node.get_id()] = node
 
 	def __str__(self):
 		return str(self.id)
@@ -53,6 +51,8 @@ class node:
 
 	def copy(self):
 		return node(self.id,self.label,self.parents.copy(),self.children.copy())
+
+
 
 class open_digraph: # for open directed graph
 	def __init__(self, inputs, outputs, nodes):
@@ -138,14 +138,14 @@ class open_digraph: # for open directed graph
         self.nodes[tgt].add_parent_id(src)
         
     def add_node(self,label='',parents=[],children=[]):
-        id = self.new_id()
+        id_ = self.new_id()
         n = node(id,label,parents,children)
         if children == []:
-            self.add_output_id(id)
+            self.add_output_id(id_)
         if parents == []:
-            self.add_input_id(id)
+            self.add_input_id(id_)
         for p in parents:
-            self.nodes[p].add_child_id(id)
+            self.nodes[p].add_child_id(id_)
         for c in children:
-            self.nodes[c].add_parent_id(id)
-        self.nodes[id] = n 
+            self.nodes[c].add_parent_id(id_)
+        self.nodes[id_] = n 
