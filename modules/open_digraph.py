@@ -29,25 +29,31 @@ class node:
 	def set_label(self , x):
 		self.label = x 
 
-	def set_parents_ids(self , nodes):
-		for n in nodes:
-			self.parents[n.get_id()] = n
+	def set_parents_ids(self , ids):
+		for n in ids:
+			self.parents[n] = 1
 
-	def set_children_ids(self , nodes):
-		for n in nodes:
-			self.children[n.get_id()] = n
+	def set_children_ids(self , ids):
+		for n in ids:
+			self.children[n] = 1
 
-    def add_child_id(self, node):
-        self.children[node.get_id()] = node
+    def add_child_id(self, id_):
+    	if self.children[id_] != 0:
+        	self.children[id_] += 1
+        else:
+        	self.children[id_] = 0
         
-    def add_parent_id(self, node):
-        self.parents[node.get_id()] = node
+    def add_parent_id(self, id_):
+        if self.parents[id_] != 0:
+        	self.parents[id_] += 1
+        else:
+        	self.parents[id_] = 0
 
 	def __str__(self):
 		return str(self.id)
 
 	def __repr__(self):
-		return repr(self.id) 
+		return repr(self.id)
 
 	def copy(self):
 		return node(self.id,self.label,self.parents.copy(),self.children.copy())
@@ -100,10 +106,6 @@ class open_digraph: # for open directed graph
 		#self.outputs = x
 		self.outputs.append(newoutput)
 
-	
-
-
-
 
 	def __str__(self):
 		return "input:"+",".join([str(i) for i in self.inputs])+"\noutput:"+",".join([str(i) for i in self.outputs])
@@ -117,9 +119,9 @@ class open_digraph: # for open directed graph
 		return open_digraph([],[],[])
 
 	def copy(self):
-		return open_digraph(self.inputs.copy(),self.outputs.copy(),[node for node in self.nodes.values()])
+		return open_digraph(self.inputs.copy(),self.outputs.copy(),self.nodes.copy())
 
-	def new_id(self) :
+	def new_id(self):
 		a = self.get_node_ids()
 		#j = False
 		#for i in range(len(a)):
@@ -149,3 +151,31 @@ class open_digraph: # for open directed graph
         for c in children:
             self.nodes[c].add_parent_id(id_)
         self.nodes[id_] = n 
+
+    def remove_edge(self,src,tgt):
+    	self.get_node_by_id(src).remove_parent_once(tgt)
+    	self.get_node_by_id(tgt).remove_child_once(src)
+
+    def remove_parallel_edge(self, src, tgt):
+    	self.get_node_by_id(src).remove_parent_id(tgt)
+    	self.get_node_by_id(tgt).remove_child_id(src)
+
+    def remove_node_by_id(self,nid):
+    	node = self.get_node_by_id(nid)
+    	[self.remove_parallel_edges(nid,par) for par in node.get_parents_ids()]
+    	[self.remove_parallel_edges(child,nid) for child in node.get_children_ids()]
+
+    def remove_edges(self,pairs=[]):
+    	for pair in pairs:
+    		self.remove_edge(pair[0],pair[1])
+
+    def remove_parallel_edges(self,pairs=[]):
+    	for pair in pairs:
+    		self.remove_parallel_edges(pair[0],pair[1])
+
+    def remove_nodes_by_id(self,ids):
+    	for nid in ids:
+    		self.remove_nodes_by_id(nid)
+
+
+
