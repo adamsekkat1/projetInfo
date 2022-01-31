@@ -73,35 +73,23 @@ class node:
 		Un setter qui ajoute aux parents, ceux dont les identifiants sont passés en paramètres.
 		@param ids, une liste de int
 	'''
-	'''
 	def add_child_id(self, x):
 		if x in self.child.keys():
 			self.children[x] += 1
 		else:
 			self.children[x] = 1
-	'''
-	def add_child_id(self, id_):
-		if self.children[id_] != 0:
-			self.children[id_] += 1
-		else:
-			self.children[id_] = 0
+
 
 	'''
 		Une fonction qui permet de rajouter un parent au noeud à l'aide de l'id du parent fourni en paramètres.
 		@param x, un int
-	'''
 	'''
 	def add_parent_id(self, x):
 		if x in self.parents.keys():
 			self.parents[x] += 1
 		else:
 			self.parents[x] = 1
-	'''
-	def add_parent_id(self, id_):
-		if self.parents[id_] != 0:
-			self.parents[id_] += 1
-		else:
-			self.parents[id_] = 0
+
 	
 	'''
 		Retire une fois une occurence de l'id du parent donné en paramètre.
@@ -266,12 +254,13 @@ class open_digraph: # for open directed graph
 	def __repr__(self):
 		return "input:"+",".join([repr(i) for i in self.inputs])+"\noutput:"+",".join([repr(i) for i in self.outputs])
 
+
+    '''
+        Une fonction qui crée un graph vide.
+        @return un open_digraph
+    '''
 	@classmethod
 	def empty(self):
-		'''
-			Une fonction qui crée un graph vide.
-			@return un open_digraph
-		'''
 		return open_digraph([],[],[])
 
 	'''
@@ -308,10 +297,17 @@ class open_digraph: # for open directed graph
 	def add_node(self,label='',parents=[],children=[]):
 		id_ = self.new_id()
 		n = node(id,label,parents,children)
+         
+        '''
+        Si un noeud n'a pas de parents, d'enfants on considère automatiquement que c'est un noeud d'input, d'output respectivement
+        En théorie on peut avoir un noeud qui n'a pas de parents qui n'est pas un input mais en pratique ça n'a pas beaucoup de sens (et au pire on enlèvera ce bout de code)
+        Si on enlève ce code, il ne faudra pas oublier de changer le code des fonctions add_input_node et add_output_node car elles en ont besoin
+        '''
 		if children == []:
 			self.add_output_id(id_)
 		if parents == []:
 			self.add_input_id(id_)
+            
 		for p in parents:
 			self.nodes[p].add_child_id(id_)
 		for c in children:
@@ -323,34 +319,22 @@ class open_digraph: # for open directed graph
 		@param _id un int
 		@return l
 	'''
-	def add_input_node(self,_id):
-		ID = self.new_id()
-		n = node(ID,label='',parents=[],children=[])
-		l=add_input_id(ID)  
-		ID = _id
-		return l 
+    def add_input_node(self,_id):
+        if _id in self.get_outputs_ids():
+            raise Exception("Un noeud output ne peut pas avoir plus d'un parent!")
+        self.add_node(children=[_id])
+        
 
 	'''
 		Une fonction qui permet de créer un noeud en output, sur lequel pointera le noeud identifié par l'id passé en paramètre.
 		@param _id un int
 		@return l
 	'''
-	def add_output_node(self,_id):
-		ID = self.new_id()
-		n = node(ID,label='',parents=[],children=[])
-		l=add_output_id(ID)  
-		ID = _id
-		return l 
-
-	#j'ai pas très bien compris la fonction d'Adam mais je propose une alternative ici en bas selon ce que j'ai compris de la question
-	'''	
-	def add_input_node(self,_id):
-		self.add_node(self,label='',parents=[],children=[_id])
-
-	def add_output_node(self,_id):
-		self.add_node(self,label='',parents=[_id],children=[])
-	'''
-
+    def add_output_node(self,_id):
+        if _id in self.get_inputs_ids():
+            raise Exception("Un noeud input ne peut pas avoir plus d'un enfant!")
+        self.add_node(parents=[_id])
+	
 
 	'''
 		Une fonction qui vérifie que les input listé dans l'attribut inputs correspondent bien à des noeuds existants
@@ -373,7 +357,7 @@ class open_digraph: # for open directed graph
 		return True 
 
 	'''
-		Une fonction qui verifie pour chaque noeud en input possède bien 0 parent et au moin un enfant.
+		Une fonction qui verifie pour chaque noeud en input possède bien 0 parent et au moins un enfant.
 		@return un boolean
 	'''
 	def input_1_children(self):
