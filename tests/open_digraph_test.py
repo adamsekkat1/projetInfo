@@ -27,4 +27,30 @@ class CopyTest(unittest.TestCase):
 if __name__ == '__main__': # the following code is called only when
     unittest.main() # precisely this file is run
 
+def GraphTest():
+    graph = open_digraph([], [], [])
+    graph.add_node()
+    print(graph.get_node_ids())
+    id = graph.get_node_ids()[0]
+    graph.add_input_node(id)
+    graph.add_output_node(id)
+    assert graph.is_well_formed()
+    graph.add_node(children=[id])
+    assert graph.is_well_formed()
+    graph.remove_node_by_id(graph.get_outputs_ids()[0])
+    assert graph.is_well_formed()
+    graph.add_edge(graph.get_inputs_ids()[0], graph.get_outputs_ids()[0])
+    assert graph.is_well_formed()
+    graph.remove_edge(graph.get_inputs_ids()[0], id)
+    assert graph.is_well_formed()
+    graph.add_input_node(graph.get_outputs_ids()[0])
+    assert graph.is_well_formed()
+    graph.add_output_node(id)
+    assert graph.is_well_formed()
+
+
+
+
+
+
 

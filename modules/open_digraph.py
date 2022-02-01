@@ -176,7 +176,7 @@ class open_digraph: # for open directed graph
 		@return une list de int
 	'''
 	def get_outputs_ids(self):
-		return self.output 
+		return self.outputs
 
 	'''
 		Un getter qui renvoie l'attribut nodes, un dictionnaire contennant les noeuds, accessible via leur identifiant.
@@ -254,8 +254,8 @@ class open_digraph: # for open directed graph
 	def __repr__(self):
 		return "input:"+",".join([repr(i) for i in self.inputs])+"\noutput:"+",".join([repr(i) for i in self.outputs])
 
-
-    '''
+	
+	'''
         Une fonction qui crée un graph vide.
         @return un open_digraph
     '''
@@ -298,7 +298,7 @@ class open_digraph: # for open directed graph
 		id_ = self.new_id()
 		n = node(id,label,parents,children)
          
-        '''
+		'''
         Si un noeud n'a pas de parents, d'enfants on considère automatiquement que c'est un noeud d'input, d'output respectivement
         En théorie on peut avoir un noeud qui n'a pas de parents qui n'est pas un input mais en pratique ça n'a pas beaucoup de sens (et au pire on enlèvera ce bout de code)
         Si on enlève ce code, il ne faudra pas oublier de changer le code des fonctions add_input_node et add_output_node car elles en ont besoin
@@ -312,17 +312,18 @@ class open_digraph: # for open directed graph
 			self.nodes[p].add_child_id(id_)
 		for c in children:
 			self.nodes[c].add_parent_id(id)
-			self.nodes[id] = n 
-	
+		self.nodes[id] = n 
+		
+
 	'''
 		Une fonction qui permet de créer un noeud en input, qui pointera vers le noeud identifié par l'id passé en paramètre.
 		@param _id un int
 		@return l
 	'''
-    def add_input_node(self,_id):
-        if _id in self.get_outputs_ids():
-            raise Exception("Un noeud output ne peut pas avoir plus d'un parent!")
-        self.add_node(children=[_id])
+	def add_input_node(self,_id):
+		if _id in self.get_outputs_ids():
+			raise Exception("Un noeud output ne peut pas avoir plus d'un parent!")
+		self.add_node(children=[_id])
         
 
 	'''
@@ -330,10 +331,10 @@ class open_digraph: # for open directed graph
 		@param _id un int
 		@return l
 	'''
-    def add_output_node(self,_id):
-        if _id in self.get_inputs_ids():
-            raise Exception("Un noeud input ne peut pas avoir plus d'un enfant!")
-        self.add_node(parents=[_id])
+	def add_output_node(self,_id):
+		if _id in self.get_inputs_ids():
+			raise Exception("Un noeud input ne peut pas avoir plus d'un enfant!")
+		self.add_node(parents=[_id])
 	
 
 	'''
