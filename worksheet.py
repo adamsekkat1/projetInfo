@@ -4,11 +4,11 @@ import tests.open_digraph_test
 
 
 #a=open_digraph.empty() 
-#<<<<<<< HEAD
+#a.add_node()
+#a.add_node()
 #a=open_digraph([1,2],[3,4],[node(1,"",[],[2]),node(2,"",[1],[])])
 #print(a)
 #print(a.new_id(9))
-#=======
 #a=open_digraph([1,2],[3,4],[node(1,"",[],[2]),node(2,"",[1],[])])
 
 #print(dir(open_digraph))

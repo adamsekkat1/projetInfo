@@ -28,24 +28,27 @@ if __name__ == '__main__': # the following code is called only when
     unittest.main() # precisely this file is run
 
 def GraphTest():
-    graph = open_digraph([], [], [])
-    graph.add_node()
-    print(graph.get_node_ids())
-    id = graph.get_node_ids()[0]
-    graph.add_input_node(id)
-    graph.add_output_node(id)
+    graph = open_digraph.empty()
     assert graph.is_well_formed()
-    graph.add_node(children=[id])
+    graph.add_node()
+    assert graph.is_well_formed()
+    id_ = graph.get_node_ids()[0]
+    graph.add_input_node(id_)
+    assert graph.is_well_formed()
+    graph.add_output_node(id_)
+    assert graph.is_well_formed()
+    graph.add_node(children={id_:1})
     assert graph.is_well_formed()
     graph.remove_node_by_id(graph.get_outputs_ids()[0])
     assert graph.is_well_formed()
-    graph.add_edge(graph.get_inputs_ids()[0], graph.get_outputs_ids()[0])
+    graph.add_output_node(id_)
+    graph.add_edge(3,0) 
     assert graph.is_well_formed()
-    graph.remove_edge(graph.get_inputs_ids()[0], id)
+    graph.remove_edge(3, 0)
     assert graph.is_well_formed()
-    graph.add_input_node(graph.get_outputs_ids()[0])
+    graph.add_input_node(0)
     assert graph.is_well_formed()
-    graph.add_output_node(id)
+    graph.add_output_node(id_)
     assert graph.is_well_formed()
 
 
