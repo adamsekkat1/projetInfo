@@ -10,7 +10,6 @@ class node:
 		self.label = label
 		self.parents = parents
 		self.children = children
-
 	'''
 		Un getter qui renvoie l'attribut id, l'identifiant du noeud.
 		@return un int
