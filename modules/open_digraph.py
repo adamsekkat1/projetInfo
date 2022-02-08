@@ -1,5 +1,6 @@
 import numpy as np
-import random 
+import random
+import graphviz 
 
 class node:
 	def __init__(self, identity, label, parents, children):
@@ -673,6 +674,20 @@ def random(cls, n, bound, inputs=0, outputs=0, loop_free=False,DAG=False, orient
 
 def from_id_to_index(G):
     return {id_:i for id_,i in enurmerate(G.get_node_ids())}
+
+
+def save_as_dot_file(self, path, verbose=False):
+        dot = graphviz.Digraph()
+        if verbose:
+            for node in self.nodes:
+                dot.node(node.id,str(node.id)+":"+node.label)
+        else:
+            for node in self.nodes:
+                dot.node(node.id,node.label)
+        for node in self.nodes:
+            for c in node.get_children_ids():
+                dot.edge(node.id,c)
+        open(path,"wb").write(dot.source)
 
 
 
