@@ -3,18 +3,18 @@ import random
 import graphviz 
 
 class node:
-	def __init__(self, identity, label, parents, children):
-		'''
-		identity: int; its unique id in the graph
-		label: string;
-		parents: int->int dict; maps a parent node's id to its multiplicity
-		children: int->int dict; maps a child node's id to its multiplicity
-		'''
-		self.id = identity
-		self.label = label
-		self.parents = parents
-		self.children = children
-	
+    def __init__(self, identity, label, parents, children):
+        '''
+        identity: int; its unique id in the graph
+        label: string;
+        parents: int->int dict; maps a parent node's id to its multiplicity
+        children: int->int dict; maps a child node's id to its multiplicity
+        '''
+        self.id = identity
+        self.label = label
+        self.parents = parents
+        self.children = children
+    
 
     def __init__(self, identity, label, parents, children):
         '''
@@ -29,75 +29,75 @@ class node:
         self.children = children
 
     '''
-		Un getter qui renvoie l'attribut id, l'identifiant du noeud.
-		@return un int
-	'''
+        Un getter qui renvoie l'attribut id, l'identifiant du noeud.
+        @return un int
+    '''
 
     def get_id(self):
         return self.id
 
     '''
-		Un getter qui renvoie le label du noeud.
-		@return un string
-	'''
+        Un getter qui renvoie le label du noeud.
+        @return un string
+    '''
 
     def get_label(self):
         return self.label
 
     '''
-		Un getter qui renvoie les identifiants des parents du noeud.
-		@return une list de int
-	'''
+        Un getter qui renvoie les identifiants des parents du noeud.
+        @return une list de int
+    '''
 
     def get_parents_ids(self):
         return self.parents.keys()
 
     '''
-		Un getter qui renvoie les identifiants des enfants du noeud.
-		@return une list de int
-	'''
+        Un getter qui renvoie les identifiants des enfants du noeud.
+        @return une list de int
+    '''
 
     def get_children_ids(self):
         return self.children.keys()
 
     '''
-		Un setter qui remplace l'identifiant du noeud par l'identifiant passé en paramètre.
-		@param x, un int
-	'''
+        Un setter qui remplace l'identifiant du noeud par l'identifiant passé en paramètre.
+        @param x, un int
+    '''
 
     def set_id(self, x):
         self.id = x
 
     '''
-		Un setter qui remplace le label du noeud par le label passé en paramètre.
-		@param x, un string
-	'''
+        Un setter qui remplace le label du noeud par le label passé en paramètre.
+        @param x, un string
+    '''
 
     def set_label(self, x):
         self.label = x
 
     '''
-		Un setter qui ajoute aux parents, ceux dont les identifiants sont passés en paramètres.
-		@param ids, une liste de int
-	'''
+        Un setter qui ajoute aux parents, ceux dont les identifiants sont passés en paramètres.
+        @param ids, une liste de int
+    '''
 
     def set_parents_ids(self, ids):
         for n in ids:
             self.parents[n] = 1
 
     '''
-		Un setter qui ajoute aux enfants, ceux dont les identifiants sont passés en paramètres.
-		@param ids, une liste de int
-	'''
+        Un setter qui ajoute aux enfants, ceux dont les identifiants sont passés en paramètres.
+        @param ids, une liste de int
+    '''
 
     def set_children_ids(self, ids):
         for n in ids:
             self.children[n] = 1
 
     '''
-		Un setter qui ajoute aux parents, ceux dont les identifiants sont passés en paramètres.
-		@param ids, une liste de int
-	'''
+        Un setter qui ajoute aux parents, ceux dont les identifiants sont passés en paramètres.
+        @param ids, une liste de int
+    '''
 
     def add_child_id(self, x):
         if x in self.children.keys():
@@ -106,9 +106,9 @@ class node:
             self.children[x] = 1
 
     '''
-		Une fonction qui permet de rajouter un parent au noeud à l'aide de l'id du parent fourni en paramètres.
-		@param x, un int
-	'''
+        Une fonction qui permet de rajouter un parent au noeud à l'aide de l'id du parent fourni en paramètres.
+        @param x, un int
+    '''
 
     def add_parent_id(self, x):
         if x in self.parents.keys():
@@ -117,53 +117,53 @@ class node:
             self.parents[x] = 1
 
     '''
-		Retire une fois une occurence de l'id du parent donné en paramètre.
-		@param idp, un int
-	'''
+        Retire une fois une occurence de l'id du parent donné en paramètre.
+        @param idp, un int
+    '''
 
     def remove_parent_once(self, idp):
         self.parents[idp] -= 1
         self.test1_id_below_0(idp)
 
     '''
-		Retire une fois une occurence de l'id de l'enfant donné en paramètre.
-		@param idp, un int
-	'''
+        Retire une fois une occurence de l'id de l'enfant donné en paramètre.
+        @param idp, un int
+    '''
 
     def remove_child_once(self, idch):
         self.children[idch] -= 1
         self.test2_id_below_0(idch)
 
     '''
-		Test si l'occurence de l'id du parent donné en paramètre est strictement supérieur à 0, dans ce cas il sera retiré de l'attribut.
-		@param id, un int
-	'''
+        Test si l'occurence de l'id du parent donné en paramètre est strictement supérieur à 0, dans ce cas il sera retiré de l'attribut.
+        @param id, un int
+    '''
 
     def test1_id_below_0(self, id_):
         if self.parents[id_] <= 0:
             self.parents.pop(id_)
 
     '''
-		Test si l'occurence de l'id de l'enfant donné en paramètre est strictement supérieur à 0, dans ce cas il sera retiré de l'attribut.
-		@param id, un int
-	'''
+        Test si l'occurence de l'id de l'enfant donné en paramètre est strictement supérieur à 0, dans ce cas il sera retiré de l'attribut.
+        @param id, un int
+    '''
 
     def test2_id_below_0(self, id_):
         if self.children[id_] <= 0:
             self.children.pop(id_)
 
     '''
-		Retire toute occurence avec le parent dont l'id est passé en paramètre.
-		@param idp, un int
-	'''
+        Retire toute occurence avec le parent dont l'id est passé en paramètre.
+        @param idp, un int
+    '''
 
     def remove_parent_id(self, idp):
         self.parents.pop(idp)
 
     '''
-		Retire toute occurence avec l'enfant dont l'id est passé en paramètre.
-		@param idp, un int
-	'''
+        Retire toute occurence avec l'enfant dont l'id est passé en paramètre.
+        @param idp, un int
+    '''
 
     def remove_child_id(self, idch):
         self.children.pop(idch)
@@ -178,9 +178,9 @@ class node:
         return str(self)
 
     '''
-		Retourne une copie du noeud.
-		@return un noeud
-	'''
+        Retourne une copie du noeud.
+        @return un noeud
+    '''
 
     def copy(self):
         return node(self.id, self.label, self.parents.copy(), self.children.copy())
@@ -197,6 +197,7 @@ class node:
     def degree(self):
         return self.indegree()+self.outdegree()
 
+  
 class open_digraph:  # for open directed graph
     def __init__(self, inputs, outputs, nodes):
         '''
@@ -210,85 +211,85 @@ class open_digraph:  # for open directed graph
         self.nodes = {node.id: node for node in nodes}
 
     '''
-		Un getter qui renvoie la liste des indentifiants des noeuds en inputs.
-		@return une list de int
-	'''
+        Un getter qui renvoie la liste des indentifiants des noeuds en inputs.
+        @return une list de int
+    '''
 
     def get_inputs_ids(self):
         return self.inputs
 
     '''
-		Un getter qui renvoie la liste des indentifiants des noeuds en outputs.
-		@return une list de int
-	'''
+        Un getter qui renvoie la liste des indentifiants des noeuds en outputs.
+        @return une list de int
+    '''
 
     def get_outputs_ids(self):
         return self.outputs
 
     '''
-		Un getter qui renvoie l'attribut nodes, un dictionnaire contennant les noeuds, accessible via leur identifiant.
-		@return un dictionnaire
-	'''
+        Un getter qui renvoie l'attribut nodes, un dictionnaire contennant les noeuds, accessible via leur identifiant.
+        @return un dictionnaire
+    '''
 
     def get_id_node_map(self):
         return self.nodes
 
     '''
-		Un getter qui renvoie la liste des noeuds.
-		@return un list de node
-	'''
+        Un getter qui renvoie la liste des noeuds.
+        @return un list de node
+    '''
 
     def get_nodes(self):
         # Je propose qu'on mette juste return self.nodes.values(), cette fonction renvoyant deja une list
         return [node for node in self.nodes.values()]
     '''
-		Un getter qui renvoie la liste des noeuds.
-		@return un list de node
-	'''
+        Un getter qui renvoie la liste des noeuds.
+        @return un list de node
+    '''
 
     def get_node_ids(self):
         # return self.nodes.keys() suffirait également à mon avis
         return list(self.nodes.keys())
 
     '''
-		Un getter qui renvoie un noeud, identifié par son id passé en paramètre.
-		@param id, un int
-		@return un node
-	'''
+        Un getter qui renvoie un noeud, identifié par son id passé en paramètre.
+        @param id, un int
+        @return un node
+    '''
 
     def get_node_by_id(self, id_):
         # il manque le second paramètre j'ai l'impression, vaudrait mieux à mon avis juste mettre return self.nodes[id], pour que l'erreur soit soulevé si jamais l'id n'est pas reconnu
         return self.nodes.get(id_)
 
     '''
-		Un getter qui renvoie une liste des noeuds identifié par les id passé en paramètre.
-		@param ids, une list de int
-		@return une list de node
-	'''
+        Un getter qui renvoie une liste des noeuds identifié par les id passé en paramètre.
+        @param ids, une list de int
+        @return une list de node
+    '''
 
     def get_nodes_by_ids(self, ids):
         return [self.get_node_by_id(id_) for id_ in ids]
 
     '''
-		Un setter qui affecte à l'attribut inputs la valeur passé en paramètre.
-		@param x un int list
-	'''
+        Un setter qui affecte à l'attribut inputs la valeur passé en paramètre.
+        @param x un int list
+    '''
 
     def set_input_ids(self, x):
         self.inputs = x
 
     '''
-		Un setter qui affecte à l'attribut outputs la valeur passé en paramètre.
-		@param x un int list
-	'''
+        Un setter qui affecte à l'attribut outputs la valeur passé en paramètre.
+        @param x un int list
+    '''
 
     def set_outputs_ids(self, x):
         self.outputs = x
 
     '''
-		Ajoute un l'identifiant passé en paramètre à la liste des inputs.
-		@param newinput, un int
-	'''
+        Ajoute un l'identifiant passé en paramètre à la liste des inputs.
+        @param newinput, un int
+    '''
 
     def add_input_id(self, newinput):
         # self.inputs = x
@@ -296,9 +297,9 @@ class open_digraph:  # for open directed graph
             self.inputs.append(newinput)
 
     '''
-		Ajoute un l'identifiant passé en paramètre à la liste des outputs.
-		@param newoutput, un int
-	'''
+        Ajoute un l'identifiant passé en paramètre à la liste des outputs.
+        @param newoutput, un int
+    '''
 
     def add_output_id(self, newoutput):
         # self.outputs = x
@@ -326,17 +327,17 @@ class open_digraph:  # for open directed graph
         return open_digraph([], [], [])
 
     '''
-		Une fonction qui renvoie une copie du graph.
-		@return un open_digraph
-	'''
+        Une fonction qui renvoie une copie du graph.
+        @return un open_digraph
+    '''
 
     def copy(self):
         return open_digraph(self.inputs.copy(), self.outputs.copy(), self.nodes.copy())
 
     '''
-		Une fonction qui renvoie un identifiant non utilisé.
-		@return un int
-	'''
+        Une fonction qui renvoie un identifiant non utilisé.
+        @return un int
+    '''
 
     def new_id(self):
         a = self.get_node_ids()
@@ -347,9 +348,9 @@ class open_digraph:  # for open directed graph
             z += 1
 
     '''
-		Une fonction qui rajoute un lien parent-enfant entre deux noeud d'id passé en paramètre
-		@param scr et tgt, des int
-	'''
+        Une fonction qui rajoute un lien parent-enfant entre deux noeud d'id passé en paramètre
+        @param scr et tgt, des int
+    '''
 
     def add_edge(self, src, tgt):
         if self.nodes[src]  in self.inputs and sum([v for k,v in self.nodes[src].children.items()])>=1:
@@ -364,9 +365,9 @@ class open_digraph:  # for open directed graph
             self.nodes[tgt].add_parent_id(src)
 
     '''
-		Une fonction qui rajoute un noeud au graph.
-		@param optionnels, label un string, parents et children des list de int
-	'''
+        Une fonction qui rajoute un noeud au graph.
+        @param optionnels, label un string, parents et children des list de int
+    '''
 
     def add_node(self, label='', parents=None, children=None):
         if parents == None : 
@@ -377,10 +378,10 @@ class open_digraph:  # for open directed graph
         n = node(id_, label, parents, children)
         
         '''
-        	Si un noeud n'a pas de parents, d'enfants on considère automatiquement que c'est un noeud d'input, d'output respectivement
-        	En théorie on peut avoir un noeud qui n'a pas de parents qui n'est pas un input mais en pratique ça n'a pas beaucoup de sens (et au pire on enlèvera ce bout de code)
-        	Si on enlève ce code, il ne faudra pas oublier de changer le code des fonctions add_input_node et add_output_node car elles en ont besoin
-    	'''
+            Si un noeud n'a pas de parents, d'enfants on considère automatiquement que c'est un noeud d'input, d'output respectivement
+            En théorie on peut avoir un noeud qui n'a pas de parents qui n'est pas un input mais en pratique ça n'a pas beaucoup de sens (et au pire on enlèvera ce bout de code)
+            Si on enlève ce code, il ne faudra pas oublier de changer le code des fonctions add_input_node et add_output_node car elles en ont besoin
+        '''
         #if children == []:
          #   self.add_output_id(id_)
         #if parents == []:
@@ -393,10 +394,10 @@ class open_digraph:  # for open directed graph
         self.nodes[id_] = n
 
     '''
-		Une fonction qui permet de créer un noeud en input, qui pointera vers le noeud identifié par l'id passé en paramètre.
-		@param _id un int
-		@return l
-	'''
+        Une fonction qui permet de créer un noeud en input, qui pointera vers le noeud identifié par l'id passé en paramètre.
+        @param _id un int
+        @return l
+    '''
 
     def add_input_node(self, _id):
         if _id in self.get_outputs_ids():
@@ -406,10 +407,10 @@ class open_digraph:  # for open directed graph
         self.inputs.append(self.get_node_ids()[-1])
 
     '''
-		Une fonction qui permet de créer un noeud en output, sur lequel pointera le noeud identifié par l'id passé en paramètre.
-		@param _id un int
-		@return l
-	'''
+        Une fonction qui permet de créer un noeud en output, sur lequel pointera le noeud identifié par l'id passé en paramètre.
+        @param _id un int
+        @return l
+    '''
 
     def add_output_node(self, _id):
         if _id in self.get_inputs_ids():
@@ -418,9 +419,9 @@ class open_digraph:  # for open directed graph
         self.outputs.append(self.get_node_ids()[-1])
 
     '''
-		Une fonction qui vérifie que les input listé dans l'attribut inputs correspondent bien à des noeuds existants
-		@return un booléen
-	'''
+        Une fonction qui vérifie que les input listé dans l'attribut inputs correspondent bien à des noeuds existants
+        @return un booléen
+    '''
 
     def inputs_graph(self):
         for Ninput in self.inputs:
@@ -429,9 +430,9 @@ class open_digraph:  # for open directed graph
         return True
 
     '''
-		Une fonction qui vérifie que les output listé dans l'attribut outputs correspondent bien à des noeuds existants
-		@return un booléen
-	'''
+        Une fonction qui vérifie que les output listé dans l'attribut outputs correspondent bien à des noeuds existants
+        @return un booléen
+    '''
 
     def outputs_graph(self):
         for Noutput in self.outputs:
@@ -440,9 +441,9 @@ class open_digraph:  # for open directed graph
         return True
 
     '''
-		Une fonction qui verifie pour chaque noeud en input possède bien 0 parent et au moins un enfant.
-		@return un boolean
-	'''
+        Une fonction qui verifie pour chaque noeud en input possède bien 0 parent et au moins un enfant.
+        @return un boolean
+    '''
 
     def input_1_children(self):
         for Ninput in self.inputs:
@@ -453,9 +454,9 @@ class open_digraph:  # for open directed graph
                 return False
         return True
     '''
-		Une fonction qui verifie pour chaque noeud en output possède bien 0 enfant et au moin un parent.
-		@return un boolean
-	'''
+        Une fonction qui verifie pour chaque noeud en output possède bien 0 enfant et au moin un parent.
+        @return un boolean
+    '''
 
     def output_1_parent(self):
         for Noutput in self.outputs:
@@ -467,9 +468,9 @@ class open_digraph:  # for open directed graph
         return True
 
     '''
-		Verifie que la clé permettant d'acceder à chaque noeud correspond bien à son identifiant
-		@return un booleen
-	'''
+        Verifie que la clé permettant d'acceder à chaque noeud correspond bien à son identifiant
+        @return un booleen
+    '''
 
     def cle_pointe_noeud(self):
         for key, node in self.nodes.items():
@@ -478,9 +479,9 @@ class open_digraph:  # for open directed graph
         return True
 
     '''
-		Verifie que que la multiplicité pour chaque arrête est bien cohérente.
-		@return un booléen
-	'''
+        Verifie que que la multiplicité pour chaque arrête est bien cohérente.
+        @return un booléen
+    '''
 
     def multiplicite_vice_versa(self):
         for y in self.nodes.values():
@@ -495,9 +496,9 @@ class open_digraph:  # for open directed graph
         return True
 
     '''
-		Vérifie que le graph est cohérent.
-		@return un booléen
-	'''
+        Vérifie que le graph est cohérent.
+        @return un booléen
+    '''
 
     def is_well_formed(self):
         if(self.inputs_graph() and self.outputs_graph() and self.input_1_children() and self.output_1_parent() and self.cle_pointe_noeud() and self.multiplicite_vice_versa()):
@@ -505,27 +506,27 @@ class open_digraph:  # for open directed graph
         return False
 
     '''
-		Une méthode qui retire une occurence entre le parent et l'enfant passé en paramètre.
-		@src, tgt deux int
-	'''
+        Une méthode qui retire une occurence entre le parent et l'enfant passé en paramètre.
+        @src, tgt deux int
+    '''
 
     def remove_edge(self, src, tgt):
         self.get_node_by_id(src).remove_child_once(tgt)
         self.get_node_by_id(tgt).remove_parent_once(src)
 
     '''
-		Une méthode qui retire toute occurence entre le parent et l'enfant passé en paramètre.
-		@src, tgt deux int
-	'''
+        Une méthode qui retire toute occurence entre le parent et l'enfant passé en paramètre.
+        @src, tgt deux int
+    '''
 
     def remove_parallel_edge(self, src, tgt):
         self.get_node_by_id(src).remove_parent_id(tgt)
         self.get_node_by_id(tgt).remove_child_id(src)
 
     '''
-		Retire toutes les arêtes impliquant le noeud indentifié par l'id passé en paramètre.
-		@param nid un int
-	'''
+        Retire toutes les arêtes impliquant le noeud indentifié par l'id passé en paramètre.
+        @param nid un int
+    '''
 
     def remove_node_by_id(self, nid):
         node = self.get_node_by_id(nid)
@@ -546,9 +547,9 @@ class open_digraph:  # for open directed graph
         self.nodes.pop(nid)
 
     '''
-		Une méthode qui retire une occurence entre chaque couples parent-enfant passé en paramètre.
-		@param pairs une list de list de int
-	'''
+        Une méthode qui retire une occurence entre chaque couples parent-enfant passé en paramètre.
+        @param pairs une list de list de int
+    '''
 
     def remove_edges(self, pairs=[]):
         for pair in pairs:
@@ -556,18 +557,18 @@ class open_digraph:  # for open directed graph
             self.remove_edge(pair[0], pair[1])
 
     '''
-		Une méthode qui retire toutes les occurences entre chaque couples parent-enfant passé en paramètre.
-		@param pairs une list de list de int
-	'''
+        Une méthode qui retire toutes les occurences entre chaque couples parent-enfant passé en paramètre.
+        @param pairs une list de list de int
+    '''
 
     def remove_parallel_edges(self, pairs=[]):
         for pair in pairs:
             self.remove_parallel_edge(pair[0], pair[1])
 
     '''
-		Retire toutes les arêtes impliquant les noeuds indentifiés par les id passé en paramètre.
-		@param ids une list de int
-	'''
+        Retire toutes les arêtes impliquant les noeuds indentifiés par les id passé en paramètre.
+        @param ids une list de int
+    '''
 
     def remove_nodes_by_id(self, ids):
         for nid in ids:
@@ -606,9 +607,9 @@ def random_int_list(n,bound):
     for i in range(n):
         s=random.randint(0, bound)
         t.append(s)
-return t 
+    return t 
 
-def random_int_matrix(n,bound,diag=True):
+def random_int_matrix(n,bound,null_diag=True):
     t=[]
     for i in range(n):
         t.append(random_int_list(n,bound))
@@ -670,7 +671,7 @@ def graph_from_adjency_matrix(M):
     return g 
 
 
-def random(n, bound, inputs=0, outputs=0, loop_free=False,DAG=False, oriented=False, undirected=False):
+def random(n, bound, inputs=0, outputs=0, form="free", loop_free=False,DAG=False, oriented=False, undirected=False):
     '''
     Doc
     Bien pr´eciser ici les options possibles pour form !
@@ -706,7 +707,7 @@ def random(n, bound, inputs=0, outputs=0, loop_free=False,DAG=False, oriented=Fa
 
 
 def from_id_to_index(G):
-    return {id_:i for id_,i in enurmerate(G.get_node_ids())}
+    return {id_:i for id_,i in enumerate(G.get_node_ids())}
 
 
 def save_as_dot_file(self, path, verbose=False):
@@ -719,7 +720,6 @@ def save_as_dot_file(self, path, verbose=False):
         for node in self.nodes:
             for c in node.get_children_ids():
                 dot.edge(node.id,c)
-            for node in self.nodes:
         open(path,"wb").write(dot.source)
 
 
@@ -729,7 +729,7 @@ class bool_circ(open_digraph):
     def __init__(self,g):
         super().__init__()
         self = g.copy()
-        if !self.is_well_formed():
+        if not self.is_well_formed():
             raise Exception("Boolean circuit is not well formed.")
 
     def test_node_labels(self):
@@ -767,7 +767,7 @@ class bool_circ(open_digraph):
         return True
 
     def is_well_formed(self):
-        return !is_cyclic(self) and self.test_node_labels() and self.test_copy_nodes_valid() and self.test_AND_nodes_valid() and self.test_OR_nodes_valid() and self.test_NOT_nodes_valid()
+        return (not is_cyclic(self)) and self.test_node_labels() and self.test_copy_nodes_valid() and self.test_AND_nodes_valid() and self.test_OR_nodes_valid() and self.test_NOT_nodes_valid()
 
 
 
