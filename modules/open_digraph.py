@@ -587,6 +587,48 @@ class open_digraph:  # for open directed graph
                 return idn 
         return None
 
+    def min_id(self):
+        return min(self.get_node_ids())
+
+    def max_id(self):
+        return max(self.get_node_ids())
+
+
+
+    def shift_indices(self,n):
+        self.nodes = {ids+n:val for ids,val in self.nodes}
+        for n in self.nodes.values():
+            n.id += n
+            n.children = {ids+n:val for ids, val in n.children}
+            n.parents = {ids+n:val for ids, val in n.parents}
+        self.inputs = [ids+n for ids in self.inputs]
+        self.outputs = [ids+n for ids in self.outputs]
+
+    def iparallel(self,g):
+        self.shift_indices(g.max_id())
+        self.nodes.update(g.nodes)
+
+    def parallel(self,g):
+        j = self.copy()
+        j.iparallel(g)
+        return j
+
+    def icompose(self,g):
+        if len(self.outputs) != len(g.inputs):
+            raise Exception("Il faut que le nombre d'entrées de g soit égal au nombre de sorties de l'instance")
+        self.shift_indices(g.max_id())
+        for x in range(len(self.outputs)):
+            g.get_node_by_id(g.inputs[x]).add_parent_id(self.outputs[x])
+
+        for x in range(len(self.outputs)):
+            self.get_node_by_id(self.outputs[x]).add_child_id(g.inputs[x])
+        self.outputs = g.outputs
+
+    def compose(self,g):
+        j = self.copy()
+        j.icompose(g)
+        return j
+
 def is_cyclic_aux(graph):
     if graph.nodes == {}:
         return False 
