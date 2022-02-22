@@ -185,6 +185,17 @@ class node:
     def copy(self):
         return node(self.id, self.label, self.parents.copy(), self.children.copy())
 
+    '''
+
+    '''
+    def indegree(self):
+        return len(self.parents.keys)
+
+    def outdegree(self):
+        return len(self.children.keys)
+
+    def degree(self):
+        return self.indegree()+self.outdegree()
 
 class open_digraph:  # for open directed graph
     def __init__(self, inputs, outputs, nodes):
@@ -570,6 +581,25 @@ class open_digraph:  # for open directed graph
                 M[index][d[c]] = id_.children[c]
         return M
 
+    def find_leaf(self):
+        for idn,n in self.nodes:
+            if n.get_children_ids() == []:
+                return idn 
+        return None
+
+def is_cyclic_aux(graph):
+    if graph.nodes == {}:
+        return False 
+    n =  graph.find_leaf() 
+    if n == None:            
+        return True
+    graph.remove_node_by_id(n)
+    return is_cyclic_aux(graph)
+
+def is_cyclic(graph):
+    graph = graph.copy()
+    return is_cyclic_aux(graph)
+
 
 def random_int_list(n,bound):
     t=[]
@@ -627,6 +657,7 @@ def random_triangular_int_matrix(n,bound,null_diag=True):
 
 
 
+
 def graph_from_adjency_matrix(M):
     g = open_digraph.empty()
     for ligne in range(len(M)) :
@@ -638,8 +669,8 @@ def graph_from_adjency_matrix(M):
                 g.add_edge(ligne,j)
     return g 
 
-@classmethod
-def random(cls, n, bound, inputs=0, outputs=0, loop_free=False,DAG=False, oriented=False, undirected=False):
+
+def random(n, bound, inputs=0, outputs=0, loop_free=False,DAG=False, oriented=False, undirected=False):
     '''
     Doc
     Bien pr´eciser ici les options possibles pour form !
@@ -672,6 +703,8 @@ def random(cls, n, bound, inputs=0, outputs=0, loop_free=False,DAG=False, orient
         g.add_output_id(a)
     return g 
 
+
+
 def from_id_to_index(G):
     return {id_:i for id_,i in enurmerate(G.get_node_ids())}
 
@@ -682,12 +715,61 @@ def save_as_dot_file(self, path, verbose=False):
             for node in self.nodes:
                 dot.node(node.id,str(node.id)+":"+node.label)
         else:
-            for node in self.nodes:
                 dot.node(node.id,node.label)
         for node in self.nodes:
             for c in node.get_children_ids():
                 dot.edge(node.id,c)
+            for node in self.nodes:
         open(path,"wb").write(dot.source)
+
+
+
+class bool_circ(open_digraph):
+    valid_labels = ["|","&","~","","0","1","^"]
+    def __init__(self,g):
+        super().__init__()
+        self = g.copy()
+        if !self.is_well_formed():
+            raise Exception("Boolean circuit is not well formed.")
+
+    def test_node_labels(self):
+        for n in self.nodes.values:
+            if n.label not in bool_circ.valid_labels:
+                return False
+        return True
+
+    def test_copy_nodes_valid(self):
+        for n in self.nodes.values:
+            if n.label == "":
+                if n.indegree() != 1:
+                    return False
+        return True
+
+    def test_AND_nodes_valid(self):
+        for n in self.nodes.values:
+            if n.label == "&":
+                if n.outdegree() != 1:
+                    return False
+        return True
+
+    def test_OR_nodes_valid(self):
+        for n in self.nodes.values:
+            if n.label == "|":
+                if n.outdegree() != 1:
+                    return False
+        return True
+
+    def test_NOT_nodes_valid(self):
+        for n in self.nodes.values:
+            if n.label == "~":
+                if n.outdegree() != 1 or n.indegree()!=1:
+                    return False
+        return True
+
+    def is_well_formed(self):
+        return !is_cyclic(self) and self.test_node_labels() and self.test_copy_nodes_valid() and self.test_AND_nodes_valid() and self.test_OR_nodes_valid() and self.test_NOT_nodes_valid()
+
+
 
 
 
