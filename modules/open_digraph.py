@@ -17,7 +17,8 @@ class node:
 	
 
     def __init__(self, identity, label, parents, children):
-        '''
+
+    '''
         identity: int; its unique id in the graph
         label: string;
         parents: int->int dict; maps a parent node's id to its multiplicity
@@ -570,6 +571,8 @@ class open_digraph:  # for open directed graph
                 M[index][d[c]] = id_.children[c]
         return M
 
+    
+
 
 def random_int_list(n,bound):
     t=[]
@@ -688,6 +691,12 @@ def save_as_dot_file(self, path, verbose=False):
             for c in node.get_children_ids():
                 dot.edge(node.id,c)
         open(path,"wb").write(dot.source)
+
+def from_dot_file(self,verbose=False):
+    graph_path = input('Veuillez entrer le chemin du fichier .dot')
+    dot_graph=open(graph_path ,"r")
+    lines = dot_graph.readlines()
+    print(lines)
 
 
 

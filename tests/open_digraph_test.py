@@ -50,6 +50,8 @@ def GraphTest():
     assert graph.is_well_formed()
     graph.add_output_node(id_)
     assert graph.is_well_formed()
+    graph.save_as_dot_file('graph.dot')
+    graph.from_dot_file()
 
 
 
