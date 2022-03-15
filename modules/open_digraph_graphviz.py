@@ -59,7 +59,7 @@ class open_digraph_graphviz:
         file.write(src)
         file.close()
 
-    def from_dot_file(filename):
+    def from_dot_file(self,filename):
         file = open(filename, "r").readlines()
         #on enleve la premiere et la derniere ligne
         file = file[1:]
@@ -97,8 +97,8 @@ class open_digraph_graphviz:
             ligne = f.partition("[")
             if ligne[1] == '':
                 l = ligne[0].split("->")
-                nodes[int(l[0])].add_child_id(int(l[1]))
-                nodes[int(l[1])].add_parent_id(int(l[0]))
+                self.nodes[int(l[0])].add_child_id(int(l[1]))
+                self.nodes[int(l[1])].add_parent_id(int(l[0]))
 
 
     def dislay(self, verbose=False):
