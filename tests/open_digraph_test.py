@@ -16,8 +16,8 @@ class InitTest(unittest.TestCase):
         self.assertIsInstance(n0, node)
         
     def test_init_open_digraph_basic(self):
-        graph = open_digraph_basic([0],[0],[node(1,"",[],[2,3]),node(2,"",[1],[4]),node(3,"",[1],[4]),node(4,"",[2,3],[])])
-        self.assertIsInstance(graph,open_digraph_basic)
+        graph = open_digraph_entity([0],[0],[node(1,"",[],[2,3]),node(2,"",[1],[4]),node(3,"",[1],[4]),node(4,"",[2,3],[])])
+        self.assertIsInstance(graph,open_digraph_entity)
     
 class CopyTest(unittest.TestCase):
     def test_copy(self):
@@ -50,6 +50,14 @@ def GraphTest():
     assert graph.is_well_formed()
     graph.add_output_node(id_)
     assert graph.is_well_formed()
+
+    graph.dislay()
+
+    id_old = graph.get_node_ids()
+    graph.shift_indices(5)
+    id_new = graph.get_node_ids()
+    for i in range(len(id_x)):
+        assert (id_old == (5 + id_new))
 
 
 

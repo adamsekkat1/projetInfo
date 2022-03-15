@@ -97,7 +97,7 @@ class open_digraph_compositions_mx:
         num, dic = self.connected_components()
         l = []
         for n in range(num):
-            g = open_digraph_basic.empty()
+            g = open_digraph_entity.empty()
             for idn,val in dic.keys():
                 if val== n:
                     g.nodes[idn] = self.get_node_by_id(idn)
