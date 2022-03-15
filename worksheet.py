@@ -18,4 +18,5 @@ import tests.open_digraph_test
 
 #l=inspect.getfile(open_digraph.copy)
 #print(l)
+#print(inspect.getmembers(open_digraph_entity))
 tests.open_digraph_test.GraphTest()

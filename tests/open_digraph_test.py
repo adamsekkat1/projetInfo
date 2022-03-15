@@ -51,14 +51,18 @@ def GraphTest():
     graph.add_output_node(id_)
     assert graph.is_well_formed()
 
-    graph.dislay()
-
     id_old = graph.get_node_ids()
     graph.shift_indices(5)
     id_new = graph.get_node_ids()
-    print(id_new, id_old)
+    #print(id_new, id_old)
     for i in range(len(id_old)):
         assert (id_new[i] == (5 + id_old[i]))
+
+    graph.save_as_dot_file("test.dot")
+    g = open_digraph_entity.empty()
+    g.from_dot_file("test.dot")
+    assert graph.is_equal(g)
+
     
 
 

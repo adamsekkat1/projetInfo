@@ -1,6 +1,7 @@
 import os
 import graphviz
 import webbrowser
+from modules.node import node
 
 
 class open_digraph_graphviz:
@@ -77,7 +78,7 @@ class open_digraph_graphviz:
 
             #si la ligne est une ligne de declaration de node
             if ligne[1] != '':
-                n = node.node(int(ligne[0]),"",{},{})
+                n = node(int(ligne[0]),"",{},{})
                 l = ligne[-1].split(",")
                 #si il y a un label on l'ajoute au noeud
                 if l[0].startswith("label"):

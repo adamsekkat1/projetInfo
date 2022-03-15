@@ -84,3 +84,21 @@ class open_digraph_well_form_mx:
         if(self.inputs_graph() and self.outputs_graph() and self.input_1_children() and self.output_1_parent() and self.cle_pointe_noeud() and self.multiplicite_vice_versa()):
             return True
         return False
+
+    def list_equal(self,l1,l2):
+        return sorted(l1) == sorted(l2)
+
+    def is_equal_in_and_out(self, graph):
+        return self.list_equal(self.inputs,graph.inputs) and self.list_equal(self.outputs,graph.outputs)
+    
+    def is_same_node(self,n1,n2):
+        return n1.id == n2.id and n1.parents == n2.parents and n1.children == n2.children#and n1.label == n2.label
+
+    def is_equal_nodes(self, graph):
+        a =   self.list_equal(self.get_node_ids(),graph.get_node_ids())
+        b = all([self.is_same_node(self.nodes[n],graph.nodes[n]) for n in self.get_node_ids()])
+
+        return a and b
+
+    def is_equal(self,graph):
+        return self.is_equal_in_and_out(graph) and self.is_equal_nodes(graph)

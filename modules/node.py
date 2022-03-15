@@ -1,16 +1,4 @@
 class node:
-    def __init__(self, identity, label, parents, children):
-        '''
-        identity: int; its unique id in the graph
-        label: string;
-        parents: int->int dict; maps a parent node's id to its multiplicity
-        children: int->int dict; maps a child node's id to its multiplicity
-        '''
-        self.id = identity
-        self.label = label
-        self.parents = parents
-        self.children = children
-    
 
     def __init__(self, identity, label, parents, children):
         '''
