@@ -14,11 +14,11 @@ class open_digraph_compositions_mx:
 
 
     def shift_indices(self,n):
-        self.nodes = {ids+n:val for ids,val in self.nodes}
-        for n in self.nodes.values():
-            n.id += n
-            n.children = {ids+n:val for ids, val in n.children}
-            n.parents = {ids+n:val for ids, val in n.parents}
+        self.nodes = {ids+n:val for ids,val in self.nodes.items()}
+        for node_ in self.nodes.values():
+            node_.id += n
+            node_.children = {ids+n:val for ids, val in node_.children.items()}
+            node_.parents = {ids+n:val for ids, val in node_.parents.items()}
         self.inputs = [ids+n for ids in self.inputs]
         self.outputs = [ids+n for ids in self.outputs]
 

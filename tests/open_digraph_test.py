@@ -56,8 +56,10 @@ def GraphTest():
     id_old = graph.get_node_ids()
     graph.shift_indices(5)
     id_new = graph.get_node_ids()
-    for i in range(len(id_x)):
-        assert (id_old == (5 + id_new))
+    print(id_new, id_old)
+    for i in range(len(id_old)):
+        assert (id_new[i] == (5 + id_old[i]))
+    
 
 
 
