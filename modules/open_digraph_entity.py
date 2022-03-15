@@ -4,6 +4,7 @@ from modules.open_digraph_compositions_mx import open_digraph_compositions_mx
 from modules.open_digraph_manipulations_mx import open_digraph_manipulations_mx
 from modules.open_digraph_matrix_mx import open_digraph_matrix_mx
 from modules.open_digraph_well_form_mx import open_digraph_well_form_mx
+from open_digraph_graphviz import *
 
 
 class open_digraph_entity(open_digraph_basic, open_digraph_compositions_mx, open_digraph_manipulations_mx, open_digraph_matrix_mx, open_digraph_well_form_mx):

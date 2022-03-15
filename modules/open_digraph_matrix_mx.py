@@ -71,7 +71,7 @@ def random_triangular_int_matrix(n,bound,null_diag=True):
 
 
 def graph_from_adjency_matrix(M):
-    g = open_digraph_basic.empty()
+    g = open_digraph_entity.empty()
     for ligne in range(len(M)) :
         g.add_node()
     
