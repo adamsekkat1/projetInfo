@@ -1,4 +1,4 @@
-from modules.open_digraph import * 
+from modules.open_digraph_entity import * 
 import inspect 
 import tests.open_digraph_test
 

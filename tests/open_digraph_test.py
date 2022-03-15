@@ -3,7 +3,7 @@ import os
 root = os.path.normpath(os.path.join(__file__, './../..'))
 sys.path.append(root)# allows us to fetch files from the project root
 import unittest
-from modules.open_digraph import *
+from modules.open_digraph_entity import *
 
 
 class InitTest(unittest.TestCase):
@@ -15,20 +15,20 @@ class InitTest(unittest.TestCase):
         self.assertEqual(n0.children, {1:1})
         self.assertIsInstance(n0, node)
         
-    def test_init_open_digraph(self):
-        graph = open_digraph([0],[0],[node(1,"",[],[2,3]),node(2,"",[1],[4]),node(3,"",[1],[4]),node(4,"",[2,3],[])])
-        self.assertIsInstance(graph,open_digraph)
+    def test_init_open_digraph_basic(self):
+        graph = open_digraph_basic([0],[0],[node(1,"",[],[2,3]),node(2,"",[1],[4]),node(3,"",[1],[4]),node(4,"",[2,3],[])])
+        self.assertIsInstance(graph,open_digraph_basic)
     
 class CopyTest(unittest.TestCase):
     def test_copy(self):
-        x=open_digraph.empty()
+        x=open_digraph_entity.empty()
         self.assertIsNot(x.copy(),x)
         
 if __name__ == '__main__': # the following code is called only when
     unittest.main() # precisely this file is run
 
 def GraphTest():
-    graph = open_digraph.empty()
+    graph = open_digraph_entity.empty()
     assert graph.is_well_formed()
     graph.add_node()
     assert graph.is_well_formed()
