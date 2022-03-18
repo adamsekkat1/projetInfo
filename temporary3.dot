@@ -1,0 +1,18 @@
+digraph G{
+   7[input=false,output=false];
+   8[input=true,output=false];
+   10[input=false,output=false];
+   9[input=false,output=true];
+   11[input=true,output=false];
+   12[input=false,output=true];
+   0[input=false,output=false];
+   1[input=true,output=false];
+   2[input=false,output=false];
+   7->9;
+   7->12;
+   8->7;
+   10->7;
+   11->7;
+   0->2;
+   1->0;
+}

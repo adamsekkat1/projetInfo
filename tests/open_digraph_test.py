@@ -28,6 +28,7 @@ if __name__ == '__main__': # the following code is called only when
     unittest.main() # precisely this file is run
 
 def GraphTest():
+    nbfichier = 0
     graph = open_digraph_entity.empty()
     assert graph.is_well_formed()
     graph.add_node()
@@ -62,6 +63,30 @@ def GraphTest():
     g = open_digraph_entity.empty()
     g.from_dot_file("test.dot")
     assert graph.is_equal(g)
+
+    g1 = open_digraph_entity.empty()
+    g2 = open_digraph_entity.empty()
+    g1.add_node()
+    g2.add_node()
+    g1.add_input_node(0)
+    g2.add_input_node(0)
+    g1.add_node()
+    g2.add_node()
+    g1.add_edge(0, 2)
+    g2.add_edge(2, 0)
+    assert g1.is_well_formed()
+    assert g2.is_well_formed()
+    graph.display()
+    g1.display()
+    g2.display()
+    graph.iparallel_l([g1])
+    graph.is_well_formed()
+    graph.display()
+    graph.iparallel_l([g2])
+    graph.is_well_formed()
+    graph.display()
+
+
 
     
 
