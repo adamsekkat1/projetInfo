@@ -41,12 +41,15 @@ class open_digraph_manip_avance_TP7:
 		return dist,prev
 
 	def dijkstra_with_tgt(self,src,tgt=None,direction=None):
+		"""Même que dijkstra mais s'arrête quand on arrive au noeud d'indice tgt passé en param.
+		@param src un int, tgt un int, direction un boolean
+		@return une paire de deux dict
+		"""
 		Q = [src]
 		dist = {src:0}
 		prev = {}
 		
 		while len(Q) > 0:
-			#print(dist)
 			u = min(Q,key=dist.get)
 			if tgt is not None:
 				if tgt == u:
@@ -63,53 +66,89 @@ class open_digraph_manip_avance_TP7:
 		return dist,prev
 
 	def shortest_path(self,u,v):
+		"""
+		Retourne la distance du plus court chemin entre deux noeud d'id donné en paramètre.
+		@param u, v des int
+		@return int
+		"""
 		dist, prev = self.dijkstra_with_tgt(u,tgt=v)
 		return dist[v]
 
 	def find_ancestors(self,u,res=[]):
-		#je suis vraiment pas sûr pour cette fonction
-		r = list(self.get_node_by_id(u).get_parents_ids())
-		if len(r) == 0:
+		"""
+		Renvoie la list de tous les ancêtres d'un noeud d'id donné récursivement.
+		@param u un int, res le resultat passé récursivement, une list
+		@return une list d'entier
+		"""
+		ancestors = list(self.get_node_by_id(u).get_parents_ids())
+		if len(ancestors) == 0:
 			return res
-		for parent in r:
-			r = self.find_ancestors(parent,r)
-		return r
+		for parent in ancestors:
+			ancestors = self.find_ancestors(parent,ancestors)
+		return ancestors
 
 	def find_common_ancestors(self,u,v):
+		"""
+		Retourne les ancêtres communs de deux noeuds d'id passé en paramètres.
+		@param u, v des int
+		@return une list d'entier
+		"""
 		u_ancestors = self.find_ancestors(u)
 		v_ancestors = self.find_ancestors(v)
 		return list(set(u_ancestors) & set(v_ancestors))
 
 	def common_ancestor_paths(self,u,v):
+		"""
+		Renvoie les distances minimales entre les ancêtres communs de 
+		deux noeuds d'id passée en paramètre et les dits noeuds.
+		@param u, v deux int
+		@return un dictionnaire {int -> (int, int)}
+		"""
 		common_ancestors = self.find_common_ancestors(u,v)
-		print(common_ancestors)
 		res = {}
 		for com in common_ancestors:
 			dist, prev = self.dijkstra(com, direction=-1)
-			print(dist)
 			res[com] = (dist[u],dist[v])
 		return res
 
 	def chercher_noeuds_sans_parents(self):
-		n = []
+		"""
+		Renvoie la liste des noeuds du graph n'ayant pas de parent.
+		@return une list de node
+		"""
+		noeuds_sans_parent = []
 		for noeud in self.nodes.values():
 			parents = noeud.get_parents_ids()
 			if len(parents) == 0:
-				n.append(noeud)
-		return n 
+				noeuds_sans_parent.append(noeud)
+		return noeuds_sans_parent
 
 	def effacer_parents_dans_noeuds(self,parents):
+		"""
+		Supprime les arêtes entre les noeuds du graph et ceux passés en paramètres.
+		(Ne supprime que dans le sens parents -> les autres noeuds)
+		@param parents une liste noeud
+		"""
 		for parent in parents:
 			for id_,n in self.nodes.items():
 				if parent.id in n.get_parents_ids():
 					self.nodes[id_].remove_parent_id(parent.id)
 
 	def effacer_noeuds(self,noeuds):
+		"""
+		Supprime les noeuds d'id passée en paramètre.
+		@param noeuds une list d'int
+		"""
 		for n in noeuds:
 			del self.nodes[n.id]
 
 
 	def tri_topologique(self):
+		"""
+		Renvoie une liste 2D de noeud, où les noeuds sont organisés 
+		en fonction de la couche où elles se situent dans le graph.
+		@return une list de list de noeud.
+		"""
 		tri = []
 		g = self.copy() #on travaillera sur ce graphe
 		while len(g.nodes) > 0:
@@ -121,6 +160,11 @@ class open_digraph_manip_avance_TP7:
 		return [[n.id for n in l ]for l in tri]
 
 	def profondeur_noeud_graphe(self,n):
+		"""
+		Retourne la profondeur d'un noeud donné en paramètre.
+		@param n un noeud
+		@return un int
+		"""
 		tri = self.tri_topologique()
 		for t in tri:
 			if n in t:
@@ -128,10 +172,20 @@ class open_digraph_manip_avance_TP7:
 		
 
 	def profondeur(self):
+		"""
+		Renvoie la profondeur maximale du graph.
+		@return un int
+		"""
 		return len(self.tri_topologique())
 
 	def dist_chemin_max(self,u,v):
-		print(self)
+		"""
+		Renvoie la distance maximale entre deux noeuds d'id 
+		passé en paramètre et le chemin le plus long.
+		Notez que l'ordre est important, u doit être ancêtre de v 
+		@param u et v des int
+		@return une paire de dict ({int -> int}, {int -> int})
+		"""
 		tri = self.tri_topologique()
 		prof_u = self.profondeur_noeud_graphe(u)
 		dist = {u:0}
@@ -140,13 +194,9 @@ class open_digraph_manip_avance_TP7:
 			for w in l:
 				
 				p = list(self.get_node_by_id(w).get_parents_ids())
-				print("node:",w)
-				print("parents:",p)
 				r =  any([parent in dist for parent in p])
-				print("dist:",dist," parents dans dist:",r)
 				p = [parent for parent in p if parent in dist]
 				if r:
-					#prev[w] = list(dist.keys())[list(dist.values()).index(max(p,key=dist.get))]
 					dist[w] = dist[max(p,key=dist.get)]+1
 					prev[w] = max(p,key=dist.get)
 						

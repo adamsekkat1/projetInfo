@@ -63,20 +63,21 @@ def GraphTest():
     assert graph.is_equal(g)
 
     graph.display()
-    print(graph.dijkstra(0))
+    assert ({0: 0, 1: 1, 2: 1, 3: 2}, {1: 0, 2: 0, 3: 1}) == graph.dijkstra(0)
     #print(graph.dijkstra_with_tgt(0,2))
     #print(graph.shortest_path(0,2))
-    print(graph.common_ancestor_paths(1, 2))
+    assert {0: (1, 1)} == graph.common_ancestor_paths(1, 2)
     
     #test tri topologique
-    print(graph.tri_topologique())
+    assert [[0, 3], [2], [1]] == graph.tri_topologique()
     
     #test profondeur
-    print(graph.profondeur())
-    print(graph.profondeur_noeud_graphe(0))
+    assert 3 == graph.profondeur()
+    assert 0 == graph.profondeur_noeud_graphe(0)
+    assert 2 == graph.profondeur_noeud_graphe(1)
 
     #test distance max
-    print(graph.dist_chemin_max(0,1))
+    assert ({0: 0, 2: 1, 1: 2}, {2: 0, 1: 2}) == graph.dist_chemin_max(0,1)
 
    #g1 = open_digraph_entity.empty()
     #g2 = open_digraph_entity.empty()
