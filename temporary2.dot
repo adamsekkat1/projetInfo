@@ -1,7 +1,0 @@
-digraph G{
-   0[input=false,output=false];
-   1[input=true,output=false];
-   2[input=false,output=false];
-   1->0;
-   2->0;
-}
