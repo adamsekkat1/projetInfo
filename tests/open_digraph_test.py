@@ -45,6 +45,9 @@ def GraphTest():
     assert graph.is_well_formed()
     graph.add_edge(3, 1)
     assert graph.is_well_formed()
+    graph.add_edge(2,1)
+    assert graph.is_well_formed()
+    
 
 
     #id_old = graph.get_node_ids()
@@ -64,6 +67,16 @@ def GraphTest():
     #print(graph.dijkstra_with_tgt(0,2))
     #print(graph.shortest_path(0,2))
     print(graph.common_ancestor_paths(1, 2))
+    
+    #test tri topologique
+    print(graph.tri_topologique())
+    
+    #test profondeur
+    print(graph.profondeur())
+    print(graph.profondeur_noeud_graphe(0))
+
+    #test distance max
+    print(graph.dist_chemin_max(0,1))
 
    #g1 = open_digraph_entity.empty()
     #g2 = open_digraph_entity.empty()
