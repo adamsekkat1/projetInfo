@@ -583,10 +583,7 @@ class open_digraph:  # for open directed graph
                 M[index][d[c]] = id_.children[c]
         return M
 
-<<<<<<< HEAD
-    
 
-=======
     def find_leaf(self):
         for idn,n in self.nodes:
             if n.get_children_ids() == []:
@@ -710,7 +707,6 @@ def is_cyclic(graph):
     graph = graph.copy()
     return is_cyclic_aux(graph)
 
->>>>>>> 24853756b80f66bd05274c6b376920d53f6761dd
 
 def random_int_list(n,bound):
     t=[]
