@@ -24,7 +24,11 @@ class open_digraph_graphviz:
             src += str(n.get_id())
             #si verbose est vrai on ajoute aussi le label
             if verbose:
-                src += " [label="+str(n.get_label())+","
+                label = str(n.get_label())
+                if len(label) > 0:
+                    src += ' [label="'+label+'",'
+                else:
+                    src += "["
                 
             else:
                 src += "["
@@ -106,7 +110,7 @@ class open_digraph_graphviz:
 
     def display(self, verbose=False):
         global nbfichier
-        self.save_as_dot_file("temporary" + str(nbfichier) + ".dot", verbose)
+        self.save_as_dot_file("temporary" + str(nbfichier) + ".dot",verbose)
         os.system("dot -Tpdf temporary" + str(nbfichier) + ".dot -o temporary" + str(nbfichier) + ".pdf")
         #webbrowser.open_new(os.getcwd() + "temporary" + str(nbfichier) + ".pdf")
         nbfichier += 1

@@ -4,6 +4,7 @@ root = os.path.normpath(os.path.join(__file__, './../..'))
 sys.path.append(root)# allows us to fetch files from the project root
 import unittest
 from modules.open_digraph_entity import *
+from modules.bool_circ import *
 
 
 class InitTest(unittest.TestCase):
@@ -101,6 +102,11 @@ def GraphTest():
     #graph.is_well_formed()
     #graph.display()
 
+    #bool_circ
+    bc = bool_circ.parse_parenthese_exo3("((x0)&((x1)&(x2)))|((x1)&(~(x2)))")
+    bc.display(verbose=True)
+
+    
 
 
     
