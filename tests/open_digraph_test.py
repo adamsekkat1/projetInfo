@@ -103,9 +103,11 @@ def GraphTest():
     #graph.display()
 
     #bool_circ
-    bc = bool_circ.parse_parenthese_exo3("((x0)&((x1)&(x2)))|((x1)&(~(x2)))")
-    bc.display(verbose=True)
+    #bc = bool_circ.parse_parenthese_exo3("((x0)&((x1)&(x2)))|((x1)&(~(x2)))")
+    #bc.display(verbose=True)
 
+    bc = bool_circ.parse_parenthese_exo5("((x0)&((x1)&(x2)))|((x1)&(~(x2)))", "((x0)&(~(x1)))|(x2)")
+    bc.display(verbose=True)
     
 
 
