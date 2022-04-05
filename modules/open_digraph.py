@@ -880,7 +880,14 @@ class bool_circ(open_digraph):
 
     def is_well_formed(self):
         return (not is_cyclic(self)) and self.test_node_labels() and self.test_copy_nodes_valid() and self.test_AND_nodes_valid() and self.test_OR_nodes_valid() and self.test_NOT_nodes_valid()
-
+"""
+    def Dijkstra(self, src, direction=None):
+        Q = [src]
+        dist = {src: 0}
+        prev = {}
+        while (Q != []):
+            u = 
+"""
 
 
 

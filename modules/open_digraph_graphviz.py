@@ -3,6 +3,8 @@ import graphviz
 import webbrowser
 from modules.node import node
 
+nbfichier = 0
+
 
 class open_digraph_graphviz:
     def save_as_dot_file(self, path, verbose=True):
@@ -102,7 +104,9 @@ class open_digraph_graphviz:
                 self.nodes[int(l[1])].add_parent_id(int(l[0]))
 
 
-    def dislay(self, verbose=False):
-        self.save_as_dot_file("temporary.dot", verbose)
-        os.system("dot -Tpdf temporary.dot -o temporary.pdf")
-        webbrowser.open_new(os.getcwd() + "temporary.pdf")
+    def display(self, verbose=False):
+        global nbfichier
+        self.save_as_dot_file("temporary" + str(nbfichier) + ".dot", verbose)
+        os.system("dot -Tpdf temporary" + str(nbfichier) + ".dot -o temporary" + str(nbfichier) + ".pdf")
+        webbrowser.open_new(os.getcwd() + "temporary" + str(nbfichier) + ".pdf")
+        nbfichier += 1

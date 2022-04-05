@@ -2,7 +2,6 @@ from modules.open_digraph_entity import *
 import inspect 
 import tests.open_digraph_test
 
-
 #a=open_digraph.empty() 
 #a.add_node()
 #a.add_node()

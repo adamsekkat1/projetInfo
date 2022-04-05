@@ -22,7 +22,11 @@ class open_digraph_compositions_mx:
         self.inputs = [ids+n for ids in self.inputs]
         self.outputs = [ids+n for ids in self.outputs]
 
+<<<<<<< HEAD
     
+=======
+    """
+>>>>>>> 1c414eee0a89dd22357a5a845c7e0b9734bb883b
     def iparallel(self,g):
         self.shift_indices(g.max_id())
         self.nodes.update(g.nodes)
@@ -33,7 +37,8 @@ class open_digraph_compositions_mx:
         j = self.copy()
         j.iparallel(g)
         return j
-    '''
+    """
+    
     
     '''
     def iparallel_l(self,l):
