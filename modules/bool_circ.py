@@ -1,6 +1,7 @@
 from modules.open_digraph import open_digraph
 from modules.open_digraph_entity import open_digraph_entity
 import copy
+from modules.open_digraph_matrix_mx import *
 
 class bool_circ(open_digraph_entity):
     valid_labels = ["|","&","~","","0","1","^"]
@@ -203,6 +204,11 @@ class bool_circ(open_digraph_entity):
         print(g.variables)
         return bool_circ(g)
 
+    def generate_random_bool_circ(n):
+        g = open_digraph_entity.random_matrix(n, 2, form='DAG')
+        
+        return g
+
 def is_cyclic_aux(graph):
     if graph.nodes == {}:
         return False 
@@ -215,3 +221,4 @@ def is_cyclic_aux(graph):
 def is_cyclic(graph):
     graph = graph.copy()
     return is_cyclic_aux(graph)
+

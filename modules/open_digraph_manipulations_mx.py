@@ -101,7 +101,7 @@ class open_digraph_manipulations_mx:
     '''
 
     def remove_parallel_edge(self, src, tgt):
-        self.get_node_by_id(src).remove_parent_id(tgt)
+        self.get_node_by_id(src).remove_parent_id(tgt) 
         self.get_node_by_id(tgt).remove_child_id(src)
 
     '''

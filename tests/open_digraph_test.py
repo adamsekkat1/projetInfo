@@ -1,5 +1,7 @@
 import sys
 import os
+
+from modules.open_digraph_Karnaugh import open_digraph_Karnaugh
 root = os.path.normpath(os.path.join(__file__, './../..'))
 sys.path.append(root)# allows us to fetch files from the project root
 import unittest
@@ -108,7 +110,12 @@ def GraphTest():
 
     bc = bool_circ.parse_parenthese_exo5("((x0)&((x1)&(x2)))|((x1)&(~(x2)))", "((x0)&(~(x1)))|(x2)")
     bc.display(verbose=True)
+
+    kar = open_digraph_Karnaugh.karnaugh('1111')
+    assert kar.is_well_formed()
+    kar.display(verbose=True)
     
+    bool_circ.generate_random_bool_circ(7).display()
 
 
     
