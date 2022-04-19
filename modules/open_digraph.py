@@ -4,7 +4,7 @@ import graphviz
 
 class node:
     def __init__(self, identity, label, parents, children):
-            '''
+        '''
         identity: int; its unique id in the graph
         label: string;
         parents: int->int dict; maps a parent node's id to its multiplicity
@@ -18,7 +18,7 @@ class node:
 
     def __init__(self, identity, label, parents, children):
 
-    '''
+        '''
         identity: int; its unique id in the graph
         label: string;
         parents: int->int dict; maps a parent node's id to its multiplicity
@@ -186,9 +186,7 @@ class node:
     def copy(self):
         return node(self.id, self.label, self.parents.copy(), self.children.copy())
 
-    '''
-
-    '''
+    
     def indegree(self):
         return len(self.parents.keys)
 

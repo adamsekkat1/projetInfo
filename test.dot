@@ -1,13 +1,10 @@
 digraph G{
-   5 [label=,input=false,output=false];
-   6 [label=,input=true,output=false];
-   8 [label=,input=false,output=false];
-   7 [label=,input=false,output=true];
-   9 [label=,input=true,output=false];
-   10 [label=,input=false,output=true];
-   5->7;
-   5->10;
-   6->5;
-   8->5;
-   9->5;
+   0[input=false,output=false];
+   1[input=false,output=false];
+   2[input=false,output=false];
+   3[input=false,output=false];
+   0->1;
+   0->2;
+   2->1;
+   3->1;
 }

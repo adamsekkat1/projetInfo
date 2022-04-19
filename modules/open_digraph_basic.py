@@ -1,4 +1,4 @@
-
+import copy
 
 class open_digraph_basic:  # for open directed graph
     
@@ -130,4 +130,7 @@ class open_digraph_basic:  # for open directed graph
     '''
 
     def copy(self):
-        return self.__class__(self.inputs.copy(), self.outputs.copy(), self.nodes.copy())
+        #g =  self.__class__(self.inputs.copy(), self.outputs.copy(),[])
+        #g.nodes = self.nodes.copy()
+        #return g
+        return copy.deepcopy(self) 

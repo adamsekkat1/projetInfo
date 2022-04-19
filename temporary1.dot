@@ -1,7 +1,27 @@
 digraph G{
-   0[input=false,output=false];
-   1[input=true,output=false];
-   2[input=false,output=false];
-   0->2;
-   1->0;
+   0 [label="|",input=false,output=false];
+   1[input=false,output=true];
+   2 [label="&",input=false,output=false];
+   3 [label="x0",input=false,output=false];
+   4 [label="&",input=false,output=false];
+   5 [label="x1",input=false,output=false];
+   6 [label="x2",input=false,output=false];
+   7 [label="&",input=false,output=false];
+   9 [label="~",input=false,output=false];
+   8[input=true,output=false];
+   10[input=true,output=false];
+   11[input=true,output=false];
+   0->1;
+   2->0;
+   3->2;
+   4->2;
+   5->4;
+   5->7;
+   6->4;
+   6->9;
+   7->0;
+   9->7;
+   8->5;
+   10->6;
+   11->3;
 }
