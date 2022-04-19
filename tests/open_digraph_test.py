@@ -1,5 +1,6 @@
 import sys
 import os
+from tabnanny import verbose
 
 from modules.open_digraph_Karnaugh import open_digraph_Karnaugh
 root = os.path.normpath(os.path.join(__file__, './../..'))
@@ -115,7 +116,7 @@ def GraphTest():
     assert kar.is_well_formed()
     kar.display(verbose=True)
     
-    bool_circ.generate_random_bool_circ(7).display()
+    bool_circ.generate_random_bool_circ_exo2(22,input=6, output=6).display(verbose=True)
 
 
     

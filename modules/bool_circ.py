@@ -1,3 +1,4 @@
+from ast import operator
 from modules.open_digraph import open_digraph
 from modules.open_digraph_entity import open_digraph_entity
 import copy
@@ -5,6 +6,7 @@ from modules.open_digraph_matrix_mx import *
 
 class bool_circ(open_digraph_entity):
     valid_labels = ["|","&","~","","0","1","^"]
+    operator_labels = ["|","&","^"]
     def __init__(self,g):
         super().__init__(g.inputs, g.outputs, list(g.nodes.values()))
         self = g.copy()
@@ -205,8 +207,121 @@ class bool_circ(open_digraph_entity):
         return bool_circ(g)
 
     def generate_random_bool_circ(n):
-        g = open_digraph_entity.random_matrix(n, 2, form='DAG')
-        
+        g = open_digraph_entity.random_matrix(n, 1, form='DAG')
+        n_sans_parent = []
+        n_sans_enfant = []
+        n_to_remove = []
+        for n in g.nodes.values():
+            if (len(n.parents.keys()) == 0):
+                n_sans_parent.append(n.id)
+            if (len(n.children.keys()) == 0):
+                n_sans_enfant.append(n.id)
+            if(len(n.parents.keys()) == len(n.children.keys()) and len(n.parents.keys()) == 1):
+                n.label = '~'
+            elif(len(n.parents.keys()) > 1 and len(n.children.keys()) == 1):
+                n.label = random.choice(bool_circ.operator_labels)
+            elif(len(n.parents.keys()) > 1 and len(n.children.keys()) > 1):
+                n_to_remove.append(n.id)
+                
+        for i in n_to_remove:
+            g.add_node()
+            for j in g.nodes[i].parents.keys():
+                g.add_edge(j, list(g.nodes.values())[-1].id)
+            list(g.nodes.values())[-1].label = random.choice(bool_circ.operator_labels)
+            g.add_node()
+            for j in g.nodes[i].children.keys():
+                g.add_edge(list(g.nodes.values())[-1].id, j)
+            g.add_edge(list(g.nodes.values())[-2].id, list(g.nodes.values())[-1].id)
+            g.remove_node_by_id(i)
+        for i in n_sans_parent:
+            g.add_input_node(i)
+            list(g.nodes.values())[-1].label = 'in'
+        for i in n_sans_enfant:
+            g.add_output_node(i)
+            list(g.nodes.values())[-1].label = 'out'
+        return g
+
+    def generate_random_bool_circ_exo2(n, input=1, output=1):
+        g = open_digraph_entity.random_matrix(n, 1, form='DAG')
+        n_sans_parent = []
+        n_sans_enfant = []
+        n_to_remove = []
+        for n in g.nodes.values():
+            if (len(n.parents.keys()) == 0):
+                n_sans_parent.append(n.id)
+            if (len(n.children.keys()) == 0):
+                n_sans_enfant.append(n.id)
+            if(len(n.parents.keys()) == len(n.children.keys()) and len(n.parents.keys()) == 1):
+                n.label = '~'
+            elif(len(n.parents.keys()) > 1 and len(n.children.keys()) == 1):
+                n.label = random.choice(bool_circ.operator_labels)
+            elif(len(n.parents.keys()) > 1 and len(n.children.keys()) > 1):
+                n_to_remove.append(n.id)
+                
+        for i in n_to_remove:
+            g.add_node()
+            for j in g.nodes[i].parents.keys():
+                g.add_edge(j, list(g.nodes.values())[-1].id)
+            list(g.nodes.values())[-1].label = random.choice(bool_circ.operator_labels)
+            g.add_node()
+            for j in g.nodes[i].children.keys():
+                g.add_edge(list(g.nodes.values())[-1].id, j)
+            g.add_edge(list(g.nodes.values())[-2].id, list(g.nodes.values())[-1].id)
+            g.remove_node_by_id(i)
+        for i in n_sans_parent:
+            g.add_input_node(i)
+            list(g.nodes.values())[-1].label = 'in'
+        diff_inputs = len(n_sans_parent) - input
+        print("diff:"+str(diff_inputs))
+        if(diff_inputs > 0):
+            l = g.inputs[:diff_inputs+1]
+            id1 = l[0]
+            l = l[1:]
+            g.fusion_liste([(id1,idn) for idn in l])
+
+        if (diff_inputs < 0):
+            for i in range(-diff_inputs):
+                rid = random.choice(n_sans_parent)
+                g.add_input_node(rid)
+                list(g.nodes.values())[-1].label = 'in'
+            for i in n_sans_parent:
+                g.add_node()
+                for j in g.nodes[i].parents.keys():
+                    g.add_edge(j, list(g.nodes.values())[-1].id)
+                list(g.nodes.values())[-1].label = random.choice(bool_circ.operator_labels)
+                g.add_node()
+                for j in g.nodes[i].children.keys():
+                    g.add_edge(list(g.nodes.values())[-1].id, j)
+                g.add_edge(list(g.nodes.values())[-2].id, list(g.nodes.values())[-1].id)
+                g.remove_node_by_id(i)
+
+        for i in n_sans_enfant:
+            g.add_output_node(i)
+            list(g.nodes.values())[-1].label = 'out'
+
+        diff_outputs = len(n_sans_enfant) - output
+        print("diff:"+str(diff_outputs))
+        if(diff_outputs > 0):
+            l = g.outputs[:diff_outputs+1]
+            id1 = l[0]
+            l = l[1:]
+            g.fusion_liste([(id1,idn) for idn in l])
+
+        if (diff_outputs < 0):
+            for i in range(-diff_outputs):
+                rid = random.choice(n_sans_enfant)
+                g.add_output_node(rid)
+                list(g.nodes.values())[-1].label = 'out'
+            for i in n_sans_enfant:
+                g.add_node()
+                for j in g.nodes[i].parents.keys():
+                    g.add_edge(j, list(g.nodes.values())[-1].id)
+                list(g.nodes.values())[-1].label = random.choice(bool_circ.operator_labels)
+                g.add_node()
+                for j in g.nodes[i].children.keys():
+                    g.add_edge(list(g.nodes.values())[-1].id, j)
+                g.add_edge(list(g.nodes.values())[-2].id, list(g.nodes.values())[-1].id)
+                g.remove_node_by_id(i)
         return g
 
 def is_cyclic_aux(graph):
