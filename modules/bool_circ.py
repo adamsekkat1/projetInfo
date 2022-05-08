@@ -1,4 +1,5 @@
 from ast import operator
+from cProfile import label
 from modules.open_digraph import open_digraph
 from modules.open_digraph_entity import open_digraph_entity
 import copy
@@ -154,7 +155,7 @@ class bool_circ(open_digraph_entity):
         graphs = []
         for s in args:
             g = bool_circ.parse_parenthese_exo3(s)
-            g.display(verbose=True)
+            #g.display(verbose=True)
             graphs.append(g)
         g = open_digraph_entity.empty().parallel_l(graphs)
         #g.display(verbose=True)
@@ -181,7 +182,7 @@ class bool_circ(open_digraph_entity):
         graphs = []
         for s in args:
             g = bool_circ.parse_parenthese_exo3(s)
-            g.display(verbose=True)
+            #g.display(verbose=True)
             graphs.append(g)
         g = open_digraph_entity.empty().parallel_l(graphs)
         #g.display(verbose=True)
@@ -380,13 +381,13 @@ class bool_circ(open_digraph_entity):
 
         g1 = bool_circ.adder(n-1)
         g2 = bool_circ.adder(n-1)
-        g1.iparallel_l([g2])
+        print(g1.max_id())
         print(g2.max_id())
-        print(g1.max_id()-2)
+        g1.iparallel_l([g2])
         #if n==1:
-        g1.fusion(g2.max_id(),g1.max_id()-2-n*g2.max_id())
+        g1.fusion(g2.max_id(),g1.max_id() - g2.max_id() + 2 * (n + 1), label=1)#g1.max_id()-2-n*g2.max_id())
 
-        return g1
+        return g1   
 
 
 
