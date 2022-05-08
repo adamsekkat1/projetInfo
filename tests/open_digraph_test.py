@@ -117,6 +117,7 @@ def GraphTest():
     kar.display(verbose=True)
     
     bool_circ.generate_random_bool_circ_exo2(22,input=6, output=6).display(verbose=True)
+    bool_circ.adder(2).display(verbose=True)
 
 
     

@@ -324,6 +324,75 @@ class bool_circ(open_digraph_entity):
                 g.remove_node_by_id(i)
         return g
 
+    '''
+    n : int
+    a, b, c : str 
+    '''
+    @classmethod
+    def adder(self,n):
+        #assert 2**n == len(a) == len(b)
+        if n == 0:
+            g = open_digraph_entity.empty()
+            g.add_node()
+            g.add_node()
+            g.add_node()
+            #g.add_input_node(0)
+            #g.add_input_node(1)
+            #g.add_input_node(2)
+
+            g.add_node()
+            g.add_edge(0,3)
+            g.add_edge(1,3)
+            g.get_node_by_id(3).label = "^"
+
+            g.add_node()
+            g.add_edge(0,4)
+            g.add_edge(1,4)
+            g.get_node_by_id(4).label = "&"
+
+            g.add_node()
+            g.add_edge(3,5)
+
+            g.add_node()
+            g.get_node_by_id(6).label = "^"
+            g.add_edge(5,6)
+            g.add_edge(2,6)
+
+            g.add_node()
+            g.get_node_by_id(7).label = "&"
+            g.add_edge(5,7)
+            g.add_edge(2,7)
+
+            g.add_node()
+            g.get_node_by_id(8).label = "|"
+            g.add_edge(7,8)
+            g.add_edge(4,8)
+
+            g.add_input_node(0)
+            g.add_input_node(1)
+            g.add_input_node(2)
+
+            g.add_output_node(6)
+            g.add_output_node(8)
+
+            return g 
+
+
+        g1 = bool_circ.adder(n-1)
+        g2 = bool_circ.adder(n-1)
+        g1.iparallel_l([g2])
+        print(g2.max_id())
+        print(g1.max_id()-2)
+        #if n==1:
+        g1.fusion(g2.max_id(),g1.max_id()-2-n*g2.max_id())
+
+        return g1
+
+
+
+    def half_adder(n,a,b):
+        return self.adder(n,a,b,0) 
+
 def is_cyclic_aux(graph):
     if graph.nodes == {}:
         return False 
