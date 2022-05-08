@@ -117,16 +117,22 @@ def GraphTest():
     #kar.display(verbose=True)
     
     #bool_circ.generate_random_bool_circ_exo2(22,input=6, output=6).display(verbose=True)
-    bool_circ.adder(0).display(verbose=True)
-    bool_circ.adder(1).display(verbose=True)
-    bool_circ.adder(2).display(verbose=True)
-
-
+    #bool_circ.adder(0).display(verbose=True)
+    #bool_circ.adder(1).display(verbose=True)
+    #bool_circ.adder(2).display(verbose=True)
+    #bool_circ.adder(2).is_well_formed()
+    #bool_circ.graphe_a_partir_dun_registre(11, n=16).display(verbose=True)
     
-
-
-
-
-
-
-
+    g1 = open_digraph_entity.empty()
+    g1.add_node(label='&')
+    for i in range(5):
+        g1.add_node(label='haha')
+        g1.add_edge(i + 1, 0)
+    
+    g1.add_node(label='0')
+    g1.add_edge(list(g1.nodes.keys())[-1], 0)
+    boolc = bool_circ(g1)
+    boolc.display(verbose=True)
+    boolc.tr_porte_ET(0)
+    boolc.display(verbose=True)
+    

@@ -169,7 +169,7 @@ class bool_circ(open_digraph_entity):
                 if res[j][0] == id2:
                     l.pop(j)
         res = l 
-        print(res)
+        #print(res)
         for pair in res:
             g.fusion(pair[0],pair[1])
         for pair in res:
@@ -196,7 +196,7 @@ class bool_circ(open_digraph_entity):
                 if res[j][0] == id2:
                     l.pop(j)
         res = l 
-        print(res)
+        #print(res)
         for pair in res:
             g.fusion(pair[0],pair[1])
         for pair in res:
@@ -204,7 +204,7 @@ class bool_circ(open_digraph_entity):
 
         g.variables = bool_circ.get_variables(g)
         g = bool_circ.remove_variable_labels(g)
-        print(g.variables)
+        #print(g.variables)
         return bool_circ(g)
 
     def generate_random_bool_circ(n):
@@ -273,7 +273,7 @@ class bool_circ(open_digraph_entity):
             g.add_input_node(i)
             list(g.nodes.values())[-1].label = 'in'
         diff_inputs = len(n_sans_parent) - input
-        print("diff:"+str(diff_inputs))
+        #print("diff:"+str(diff_inputs))
         if(diff_inputs > 0):
             l = g.inputs[:diff_inputs+1]
             id1 = l[0]
@@ -301,7 +301,7 @@ class bool_circ(open_digraph_entity):
             list(g.nodes.values())[-1].label = 'out'
 
         diff_outputs = len(n_sans_enfant) - output
-        print("diff:"+str(diff_outputs))
+        #print("diff:"+str(diff_outputs))
         if(diff_outputs > 0):
             l = g.outputs[:diff_outputs+1]
             id1 = l[0]
@@ -381,8 +381,8 @@ class bool_circ(open_digraph_entity):
 
         g1 = bool_circ.adder(n-1)
         g2 = bool_circ.adder(n-1)
-        print(g1.max_id())
-        print(g2.max_id())
+        #print(g1.max_id())
+        #print(g2.max_id())
         g1.iparallel_l([g2])
         #if n==1:
         g1.fusion(g2.max_id(),g1.max_id() - g2.max_id() + 2 * (n + 1), label=1)#g1.max_id()-2-n*g2.max_id())
@@ -391,8 +391,64 @@ class bool_circ(open_digraph_entity):
 
 
 
-    def half_adder(n,a,b):
+    def half_adder(self,n,a,b):
         return self.adder(n,a,b,0) 
+
+    @classmethod
+    def graphe_a_partir_dun_registre(self, entier, n=8):
+        formule_bin = bin(entier)[2:]
+        g = open_digraph_entity.empty()
+        zero_padding = n-len(formule_bin)
+        while zero_padding>0:
+            zero_padding -= 1
+            g.add_node()
+            g.get_node_by_id(g.get_node_ids()[-1]).label = "0" 
+        for i in range(len(formule_bin)):
+            g.add_node()
+            g.get_node_by_id(g.get_node_ids()[-1]).label = formule_bin[i]
+
+        #g.inputs = g.get_node_ids()  je sais pas si il faut faire ça ou pas ? 
+        return g
+
+    def tr_copies(self, id1, id2):
+        n1 = self.get_node_by_id(id1)
+        n2 = self.get_node_by_id(id2)
+        for i in list(n2.get_children_ids()):
+            self.add_node(label=n1.get_label(), parents=n1.parents, children={i : n2.children[i]})
+        self.remove_node_by_id(id1)
+        self.remove_node_by_id(id2)
+
+    def tr_porte_NON(self, id1, id2):
+        if(self.get_node_by_id(id2).label == '~'):
+            self.fusion(id1, id2)
+            n = self.get_node_by_id(id1)
+            if (n.label == '0'):
+                n.set_label('1')
+            else :
+                n.set_label('0')
+
+    def tr_porte_ET(self, id):
+        n = self.get_node_by_id(id)
+        l = []
+        if(n.label == '&'):
+            for i in n.get_parents_ids():
+                n1 = self.get_node_by_id(i)
+                if n1.label == '0':
+                    n.set_label('0')
+                    l = list(n.get_parents_ids())
+                    for par in l:
+                        self.remove_parallel_edge(id, par)
+                    self.remove_node_by_id(i)
+                    return
+                elif n1.label == '1':
+                    l += [i]
+            for n2 in l:
+                self.remove_node_by_id(n2)
+
+    
+
+
+
 
 def is_cyclic_aux(graph):
     if graph.nodes == {}:
