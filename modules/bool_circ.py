@@ -445,6 +445,48 @@ class bool_circ(open_digraph_entity):
             for n2 in l:
                 self.remove_node_by_id(n2)
 
+    def tr_porte_OU(self, id):
+        n = self.get_node_by_id(id)
+        l = []
+        if(n.label == '|'):
+            for i in n.get_parents_ids():
+                n1 = self.get_node_by_id(i)
+                if n1.label == '1':
+                    n.set_label('1')
+                    l = list(n.get_parents_ids())
+                    for par in l:
+                        self.remove_parallel_edge(id, par)
+                    self.remove_node_by_id(i)
+                    return
+                elif n1.label == '0':
+                    l += [i]
+            for j in l:
+                self.remove_node_by_id(j)
+
+    def tr_porte_OU_exclusif(self, id):
+        n = self.get_node_by_id(id)
+        l = []
+        compt1 = 0
+        if(n.label == '^'):
+            for i in n.get_parents_ids():
+                n1 = self.get_node_by_id(i)
+                if n1.label == '1':
+                    l += [i]
+                    compt1 += 1
+                elif n1.label == '0':
+                    l += [i]
+            for n2 in l:
+                self.remove_node_by_id(n2)
+            if(compt1 % 2 == 1):
+                self.add_node(label='~')
+                tmp = self.get_node_by_id(list(self.nodes.keys())[-1])
+                tmp.children = n.children
+                l2 = list(n.get_children_ids())
+                for child in l2:
+                    self.remove_parallel_edge(id, child)
+                self.add_edge(id, list(self.nodes.keys())[-1])
+
+
     
 
 
