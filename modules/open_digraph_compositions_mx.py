@@ -39,7 +39,7 @@ class open_digraph_compositions_mx:
     '''
     def iparallel_l(self,l):
         for g in l:
-            self.shift_indices(g.max_id())
+            self.shift_indices(g.max_id()+1)
             self.nodes.update(g.nodes)
             self.inputs += g.inputs
             self.outputs += g.outputs

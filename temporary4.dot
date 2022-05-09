@@ -1,0 +1,29 @@
+digraph G{
+   0[input=false,output=false];
+   1[input=false,output=false];
+   2 [label="|",input=false,output=false];
+   3 [label="&",input=false,output=false];
+   4 [label="~",input=false,output=false];
+   5 [label="~",input=false,output=false];
+   6 [label="&",input=false,output=false];
+   7 [label="~",input=false,output=false];
+   8 [label="&",input=false,output=false];
+   9 [label="~",input=false,output=false];
+   10 [label="&",input=false,output=false];
+   0->4;
+   0->7;
+   0->8;
+   0->10;
+   1->5;
+   1->6;
+   1->9;
+   1->10;
+   3->2;
+   4->3;
+   5->3;
+   6->2;
+   7->6;
+   8->2;
+   9->8;
+   10->2;
+}
