@@ -12,8 +12,10 @@ class bool_circ(open_digraph_entity):
         super().__init__(g.inputs, g.outputs, list(g.nodes.values()))
         self = g.copy()
         self.variables = {}
+        """
         if not self.is_well_formed():
             raise Exception("Boolean circuit is not well formed.")
+            """
 
     def test_node_labels(self):
         for n in self.nodes.values:
@@ -208,7 +210,7 @@ class bool_circ(open_digraph_entity):
         return bool_circ(g)
 
     def generate_random_bool_circ(n):
-        g = open_digraph_entity.random_matrix(n, 1, form='DAG')
+        g = bool_circ(open_digraph_entity.random_matrix(n, 1, form='DAG'))
         n_sans_parent = []
         n_sans_enfant = []
         n_to_remove = []
@@ -243,7 +245,7 @@ class bool_circ(open_digraph_entity):
         return g
 
     def generate_random_bool_circ_exo2(n, input=1, output=1):
-        g = open_digraph_entity.random_matrix(n, 1, form='DAG')
+        g = bool_circ(open_digraph_entity.random_matrix(n, 1, form='DAG'))
         n_sans_parent = []
         n_sans_enfant = []
         n_to_remove = []
@@ -409,19 +411,29 @@ class bool_circ(open_digraph_entity):
 
         #g.inputs = g.get_node_ids()  je sais pas si il faut faire ça ou pas ? 
         return g
-
+    """
     def tr_copies(self, id1, id2):
         n1 = self.get_node_by_id(id1)
         n2 = self.get_node_by_id(id2)
         for i in list(n2.get_children_ids()):
-            self.add_node(label=n1.get_label(), parents=n1.parents, children={i : n2.children[i]})
+            self.add_node(label=n1.get_label(), parents=n1.parents.copy(), children={i : n2.children[i]})
         self.remove_node_by_id(id1)
         self.remove_node_by_id(id2)
+    """
+    def tr_copies(self, id):
+        n = self.get_node_by_id(id)
+        if(n.label == '0' or n.label == '1' and self.get_node_by_id(id) is not None):
+            child = self.get_node_by_id(list(n.children.keys())[-1])
+            if(child.label == '' and child is not None):
+                for i in list(child.get_children_ids()):
+                    self.add_node(label=n.get_label(), parents=n.parents.copy(), children={i : child.children[i]})
+                self.remove_node_by_id(id)
+                self.remove_node_by_id(list(n.children.keys())[-1])
 
-    def tr_porte_NON(self, id1, id2):
-        if(self.get_node_by_id(id2).label == '~'):
-            self.fusion(id1, id2)
-            n = self.get_node_by_id(id1)
+    def tr_porte_NON(self, id):
+        if(self.get_node_by_id(id).label == '~' and self.get_node_by_id(id) is not None):
+            self.fusion(id, list(self.get_node_by_id(id).parents.keys())[-1])
+            n = self.get_node_by_id(id)
             if (n.label == '0'):
                 n.set_label('1')
             else :
@@ -430,7 +442,7 @@ class bool_circ(open_digraph_entity):
     def tr_porte_ET(self, id):
         n = self.get_node_by_id(id)
         l = []
-        if(n.label == '&'):
+        if(n.label == '&' and self.get_node_by_id(id) is not None):
             for i in n.get_parents_ids():
                 n1 = self.get_node_by_id(i)
                 if n1.label == '0':
@@ -448,7 +460,7 @@ class bool_circ(open_digraph_entity):
     def tr_porte_OU(self, id):
         n = self.get_node_by_id(id)
         l = []
-        if(n.label == '|'):
+        if(n.label == '|' and self.get_node_by_id(id) is not None):
             for i in n.get_parents_ids():
                 n1 = self.get_node_by_id(i)
                 if n1.label == '1':
@@ -467,7 +479,7 @@ class bool_circ(open_digraph_entity):
         n = self.get_node_by_id(id)
         l = []
         compt1 = 0
-        if(n.label == '^'):
+        if(n.label == '^' and self.get_node_by_id(id) is not None):
             for i in n.get_parents_ids():
                 n1 = self.get_node_by_id(i)
                 if n1.label == '1':
@@ -480,15 +492,92 @@ class bool_circ(open_digraph_entity):
             if(compt1 % 2 == 1):
                 self.add_node(label='~')
                 tmp = self.get_node_by_id(list(self.nodes.keys())[-1])
-                tmp.children = n.children
+                tmp.children = n.children.copy()
                 l2 = list(n.get_children_ids())
                 for child in l2:
                     self.remove_parallel_edge(id, child)
                 self.add_edge(id, list(self.nodes.keys())[-1])
+                print(self)
 
+    def tr_element_neutre(self, id):
+        n = self.get_node_by_id(id)
+        if(n.label == '|' or n.label == '^' and self.get_node_by_id(id) is not None):
+            self.label = '0'
+        elif(n.label == '&'):
+            self.label = '1'
 
-    
+    def possede_cofeuille(self):
+        for node in list(self.nodes.values()):
+            for i in list(node.children.keys()): 
+                if i not in self.outputs: 
+                    return True
+        return False
 
+    def relie_a_output(self, id):
+        node = self.get_node_by_id(id)
+        res = False
+        for i in list(node.children.keys()): 
+            if i in self.outputs:
+                res = True
+        return res
+
+    def isInput(self, id):
+        return id not in self.inputs
+
+    def moin(self, listA, listB):
+        setA = set(listA)
+        setB = set(listB)
+        return list(setA - setB)
+
+    def evaluate(self):
+        """
+        i = 0
+        while(self.possede_cofeuille()):
+            while(self.get_node_by_id(self.nodes.keys()[i]) == None): 
+                if(self.nodes.keys()[i] < list(self.nodes.keys()).max):
+                    i += 1
+                else:
+                    i = 0
+            if(not(self.isInput(self.nodes.keys()[i]) and self.relie_a_output(self.nodes.keys()[i]))):
+                    self.tr_copies(self.nodes.keys()[i])
+                    self.tr_element_neutre(self.nodes.keys()[i])
+                    self.tr_porte_ET(self.nodes.keys()[i])
+                    self.tr_porte_NON(self.nodes.keys()[i])
+                    self.tr_porte_OU(self.nodes.keys()[i])
+                    self.tr_porte_OU_exclusif(self.nodes.keys()[i])
+        """
+        """
+        i = 0
+        id = list(self.nodes.keys())[i]
+        while(self.possede_cofeuille()):
+            if (id != self.get_node_ids()[-1]):
+                i += 1  
+                id = list(self.nodes.keys())[i]
+            else:
+                i = 0
+                id = list(self.nodes.keys())[i]
+            print('i = ', i)
+            print('id = ', id)
+            if (not(self.isInput(id) and self.relie_a_output(id))):
+                    self.tr_copies(id)
+                    self.tr_element_neutre(id)
+                    self.tr_porte_ET(id)
+                    self.tr_porte_NON(id)
+                    self.tr_porte_OU(id)
+                    self.tr_porte_OU_exclusif(id)
+        """
+        while(self.possede_cofeuille()):
+            l = self.moin(self.moin(list(self.nodes.keys()), self.inputs), self.outputs)
+            for id in l:
+                if (not self.relie_a_output(id)):
+                    self.tr_copies(id)
+                    self.tr_element_neutre(id)
+                    self.tr_porte_ET(id)
+                    self.tr_porte_NON(id)
+                    self.tr_porte_OU(id)
+                    self.tr_porte_OU_exclusif(id)
+
+                
 
 
 

@@ -1,17 +1,6 @@
 digraph G{
-   2[input=false,output=false];
-   3[input=false,output=false];
-   4[input=false,output=false];
-   5[input=false,output=false];
-   6[input=false,output=false];
-   7 [label="ici",input=false,output=false];
-   8 [label="ici",input=false,output=false];
-   9 [label="ici",input=false,output=false];
-   10 [label="ici",input=false,output=false];
-   11 [label="ici",input=false,output=false];
-   7->2;
-   8->3;
-   9->4;
-   10->5;
-   11->6;
+   0 [label="^",input=false,output=false];
+   1 [label="~",input=false,output=false];
+   0->1;
+   1->1;
 }

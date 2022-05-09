@@ -124,7 +124,7 @@ def GraphTest():
     #bool_circ.adder(2).display(verbose=True)
     #bool_circ.adder(2).is_well_formed()
     #bool_circ.graphe_a_partir_dun_registre(11, n=16).display(verbose=True)
-    
+    """
     g1 = open_digraph_entity.empty()
     g1.add_node(label='^')
     for i in range(6):
@@ -137,6 +137,20 @@ def GraphTest():
     boolc.display(verbose=True)
     boolc.tr_porte_OU_exclusif(0)
     boolc.display(verbose=True)
+    """
+    
+    bc = bool_circ.generate_random_bool_circ_exo2(10, 1, 3)
+    bc.display(verbose=True)
+    for i in range(50):
+        for id in list(bc.nodes.keys()):
+            bc.tr_copies(id)
+            bc.tr_element_neutre(id)
+            bc.tr_porte_ET(id)
+            bc.tr_porte_NON(id)
+            bc.tr_porte_OU(id)
+            bc.tr_porte_OU_exclusif(id)
+    bc.display(verbose=True)
+    print(len(bc.nodes))
     
 <<<<<<< HEAD
  
