@@ -9,6 +9,10 @@ def to_bin(s, nb_variable):
     
 
 class open_digraph_Karnaugh(open_digraph_entity):
+    '''
+     Fonction qui prend en paramètre une chaine de caractère  et qui return un graphe 
+
+    '''
     def karnaugh(s):
         res = open_digraph_entity.empty()
         nb_variable = math.log(len(s), 2)
