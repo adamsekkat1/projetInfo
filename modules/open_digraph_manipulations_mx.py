@@ -101,6 +101,7 @@ class open_digraph_manipulations_mx:
     '''
 
     def remove_parallel_edge(self, src, tgt):
+        #print('src = ', src, ', tgt = ', tgt)
         self.get_node_by_id(src).remove_parent_id(tgt) 
         self.get_node_by_id(tgt).remove_child_id(src)
 
@@ -158,6 +159,10 @@ class open_digraph_manipulations_mx:
     def fusion(self, id1, id2, label=0):
         if label == 1:
             self.get_node_by_id(id1).label = self.get_node_by_id(id2).label
+        #print("id1 = ", id1)
+        #print(self.get_node_by_id(id1))
+        #print("id2 = ", id2)
+        #print(self.get_node_by_id(id1))
         self.get_node_by_id(id1).children.update(self.get_node_by_id(id2).children)
         self.get_node_by_id(id1).parents.update(self.get_node_by_id(id2).parents)
         for c in self.get_node_by_id(id2).children:
@@ -170,8 +175,8 @@ class open_digraph_manipulations_mx:
         
     def fusion_liste(self,l,label=0):
         for pair in l:
-            id1 = pair[0].id
-            id2 = pair[1].id
+            id1 = pair[0]
+            id2 = pair[1]
             if label == 1:
                 self.get_node_by_id(id1).label = self.get_node_by_id(id2).label
             self.get_node_by_id(id1).children.update(self.get_node_by_id(id2).children)
@@ -183,4 +188,4 @@ class open_digraph_manipulations_mx:
                 c = self.get_node_by_id(c)
                 c.children[id1] = c.children[id2]
         
-        self.remove_node_by_id(id2)
+            self.remove_node_by_id(id2)

@@ -43,7 +43,7 @@ class open_digraph_matrix_mx:
         elif form=="loop-free undirected":
             M=random_symetric_int_matrix(n, bound)
 
-        print(M)
+        #print(M)
         g =  cls.graph_from_adjency_matrix(M)
         for i in range(inputs):
             a = random.randint(0,n)

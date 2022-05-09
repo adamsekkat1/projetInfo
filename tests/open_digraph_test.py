@@ -1,5 +1,6 @@
 import sys
 import os
+from tabnanny import verbose
 
 from modules.open_digraph_Karnaugh import open_digraph_Karnaugh
 root = os.path.normpath(os.path.join(__file__, './../..'))
@@ -67,7 +68,7 @@ def GraphTest():
     g.from_dot_file("test.dot")
     assert graph.is_equal(g)
 
-    graph.display()
+    #graph.display()
     assert ({0: 0, 1: 1, 2: 1, 3: 2}, {1: 0, 2: 0, 3: 1}) == graph.dijkstra(0)
     #print(graph.dijkstra_with_tgt(0,2))
     #print(graph.shortest_path(0,2))
@@ -111,16 +112,33 @@ def GraphTest():
     #bc.display(verbose=True)
 
     bc = bool_circ.parse_parenthese_exo5("((x0)&((x1)&(x2)))|((x1)&(~(x2)))", "((x0)&(~(x1)))|(x2)")
-    bc.display(verbose=True)
+    #bc.display(verbose=True)
 
     kar = open_digraph_Karnaugh.karnaugh('1111')
     assert kar.is_well_formed()
-    kar.display(verbose=True)
+    #kar.display(verbose=True)
     
-    bool_circ.generate_random_bool_circ(7).display()
-
-
+    #bool_circ.generate_random_bool_circ_exo2(22,input=6, output=6).display(verbose=True)
+    #bool_circ.adder(0).display(verbose=True)
+    #bool_circ.adder(1).display(verbose=True)
+    #bool_circ.adder(2).display(verbose=True)
+    #bool_circ.adder(2).is_well_formed()
+    #bool_circ.graphe_a_partir_dun_registre(11, n=16).display(verbose=True)
     
+    g1 = open_digraph_entity.empty()
+    g1.add_node(label='^')
+    for i in range(6):
+        g1.add_node(label='0')
+        g1.add_edge(i + 1, 0)
+    
+    g1.add_node(label='1')
+    g1.add_edge(list(g1.nodes.keys())[-1], 0)
+    boolc = bool_circ(g1)
+    boolc.display(verbose=True)
+    boolc.tr_porte_OU_exclusif(0)
+    boolc.display(verbose=True)
+    
+<<<<<<< HEAD
  
 
 
@@ -128,3 +146,5 @@ def GraphTest():
 
 
 
+=======
+>>>>>>> 6a65053e5da58c30ff980d84fd658aa2665d57f4
